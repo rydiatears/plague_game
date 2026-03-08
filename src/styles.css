@@ -634,6 +634,12 @@ kbd {
 }
 
 @media (max-width: 640px) {
+  .landing-hint,
+  .footer-note,
+  .note-hint {
+    display: none;
+  }
+
   .title-screen__overlay {
     padding: 0;
   }
