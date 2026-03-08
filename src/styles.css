@@ -808,7 +808,15 @@ kbd {
   .card-copy {
     display: grid;
     gap: 10px;
-    padding: 6px 2px 0;
+    position: relative;
+    margin-top: -34px;
+    padding: 14px 14px 12px;
+    border: 1px solid rgba(235, 215, 186, 0.14);
+    border-radius: 16px;
+    background:
+      linear-gradient(180deg, rgba(26, 17, 16, 0.96), rgba(36, 21, 19, 0.98));
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+    z-index: 1;
   }
 
   .card-copy p {
@@ -820,7 +828,8 @@ kbd {
     align-items: center;
     gap: 10px;
     margin-bottom: 0;
-    padding-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom-color: rgba(235, 215, 186, 0.08);
   }
 
   .season-text {
@@ -898,6 +907,12 @@ kbd {
 
   .landing-copy {
     font-size: 1rem;
+  }
+
+  .card-copy {
+    margin-top: -28px;
+    padding: 12px;
+    border-radius: 14px;
   }
 
   .season-marker {
