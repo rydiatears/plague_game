@@ -487,6 +487,7 @@ button {
   padding: 24px;
   background: rgba(4, 3, 3, 0.72);
   backdrop-filter: blur(3px);
+  z-index: 1000;
 }
 
 .note-card {
@@ -541,6 +542,7 @@ button {
   place-items: center;
   padding: 24px;
   background: rgba(8, 6, 6, 0.58);
+  z-index: 1000;
 }
 
 .credits-card {
@@ -804,6 +806,13 @@ kbd {
     max-width: none;
     height: 188px;
     border-radius: 14px;
+    background: rgba(15, 10, 10, 0.8);
+  }
+
+  .portrait-photo {
+    object-fit: contain;
+    object-position: center top;
+    background: rgba(15, 10, 10, 0.8);
   }
 
   .card-copy h2,
@@ -1037,6 +1046,7 @@ document.getElementById("restart-button").addEventListener("click", restart); wi
 </script>
 </body>
 </html>
+
 
 
 
