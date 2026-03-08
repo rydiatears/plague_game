@@ -1,0 +1,921 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Plague Year</title>
+  <style>:root {
+  font-family: Georgia, "Times New Roman", serif;
+  color: #f7f0e1;
+  background:
+    radial-gradient(circle at top, rgba(176, 38, 28, 0.15), transparent 30%),
+    linear-gradient(180deg, #261715 0%, #140e0d 100%);
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(190, 154, 84, 0.08), transparent 24%),
+    linear-gradient(180deg, #261715 0%, #140e0d 100%);
+}
+
+button,
+kbd {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app-shell {
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.app-shell.title-shell {
+  padding: 0;
+}
+
+.title-screen {
+  min-height: 100vh;
+  background-image:
+    linear-gradient(180deg, rgba(10, 8, 8, 0.54), rgba(10, 8, 8, 0.82)),
+    var(--title-art);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.title-screen__overlay {
+  min-height: 100vh;
+  padding: 24px;
+  display: grid;
+  align-items: center;
+  background:
+    radial-gradient(circle at 20% 18%, rgba(191, 143, 60, 0.14), transparent 28%),
+    linear-gradient(180deg, rgba(18, 12, 11, 0.5), rgba(18, 12, 11, 0.78));
+}
+
+.title-screen__content {
+  width: min(960px, 100%);
+  margin: 0 auto;
+  padding: clamp(28px, 5vw, 56px);
+  border: 1px solid rgba(235, 215, 186, 0.18);
+  border-radius: 32px;
+  background:
+    linear-gradient(135deg, rgba(17, 11, 10, 0.82), rgba(17, 11, 10, 0.58));
+  box-shadow: 0 24px 90px rgba(0, 0, 0, 0.36);
+  backdrop-filter: blur(2px);
+}
+
+.landing-frame {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.landing-card {
+  padding: 32px;
+  border: 1px solid rgba(235, 215, 186, 0.16);
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at top right, rgba(216, 183, 120, 0.08), transparent 24%),
+    rgba(20, 14, 13, 0.88);
+  box-shadow: 0 24px 90px rgba(0, 0, 0, 0.35);
+}
+
+.landing-title {
+  margin: 0 0 16px;
+  font-size: clamp(2.6rem, 6vw, 4.8rem);
+  line-height: 0.95;
+}
+
+.landing-hook {
+  margin: 0 0 18px;
+  color: #e7d3ac;
+  font-size: 1.35rem;
+}
+
+.landing-copy {
+  margin: 0 0 14px;
+  max-width: 760px;
+  font-size: 1.05rem;
+}
+
+.landing-stats {
+  margin: 22px 0;
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(235, 215, 186, 0.12);
+}
+
+.landing-button {
+  margin-top: 10px;
+}
+
+.landing-actions {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.landing-actions .landing-button {
+  margin-top: 0;
+}
+
+.landing-hint {
+  margin: 0;
+  color: #ceb996;
+  font-size: 0.82rem;
+}
+
+.text-link {
+  margin-top: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #ceb996;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.about-card {
+  display: grid;
+  gap: 18px;
+}
+
+.about-section {
+  display: grid;
+  gap: 10px;
+}
+
+.about-section h2 {
+  margin: 8px 0 0;
+  font-size: 1.35rem;
+}
+
+.game-frame {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 24px;
+  border: 1px solid rgba(235, 215, 186, 0.16);
+  border-radius: 28px;
+  background: rgba(20, 14, 13, 0.84);
+  box-shadow: 0 24px 90px rgba(0, 0, 0, 0.35);
+}
+
+.game-frame.menu-mode {
+  max-width: 980px;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.game-frame.title-mode {
+  max-width: none;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.game-frame.title-mode > .topbar,
+.game-frame.title-mode > .stats-panel,
+.game-frame.title-mode > .footer-note {
+  display: none !important;
+}
+
+.game-frame.menu-mode > .topbar,
+.game-frame.menu-mode > .stats-panel,
+.game-frame.menu-mode > .footer-note {
+  display: none !important;
+}
+
+.topbar,
+.stat-header,
+.choice-grid,
+.footer-note {
+  display: flex;
+}
+
+.topbar,
+.stat-header {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.topbar {
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.topbar h1,
+.card-copy h2,
+.end-panel h2,
+.historian-block h3 {
+  margin: 0;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  color: #ceb996;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.8rem;
+}
+
+.ghost-button,
+.primary-button,
+.choice-card {
+  border: 1px solid rgba(235, 215, 186, 0.22);
+  color: #f7f0e1;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.ghost-button,
+.primary-button {
+  border-radius: 999px;
+  padding: 10px 16px;
+}
+
+.stats-panel {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.stat-card {
+  position: relative;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  transition:
+    background 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.stat-card.flash-good {
+  background: rgba(118, 160, 98, 0.18);
+  box-shadow: 0 0 0 1px rgba(189, 229, 170, 0.2) inset;
+}
+
+.stat-card.flash-bad {
+  background: rgba(163, 72, 62, 0.18);
+  box-shadow: 0 0 0 1px rgba(240, 176, 168, 0.2) inset;
+}
+
+.stat-card.near-failure {
+  background: rgba(122, 32, 27, 0.2);
+  box-shadow:
+    0 0 0 1px rgba(211, 97, 85, 0.28) inset,
+    0 0 22px rgba(120, 29, 24, 0.18);
+}
+
+.stat-card.near-failure .stat-header {
+  color: #ffd8d1;
+}
+
+.stat-card.near-failure .stat-bar {
+  background: rgba(120, 36, 31, 0.34);
+}
+
+.stat-card.death .stat-fill {
+  background: linear-gradient(90deg, #8b1e18, #d94b3d);
+}
+
+.stat-card.wealth .stat-fill {
+  background: linear-gradient(90deg, #83651d, #d4a641);
+}
+
+.stat-card.order .stat-fill {
+  background: linear-gradient(90deg, #56686f, #9eb6bd);
+}
+
+.stat-card.faith .stat-fill {
+  background: linear-gradient(90deg, #6d5b2e, #d1be7a);
+}
+
+.stat-bar {
+  margin-top: 10px;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.stat-fill {
+  height: 100%;
+  border-radius: inherit;
+  transition: width 280ms ease;
+}
+
+.stat-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.delta-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  letter-spacing: 0.02em;
+}
+
+.delta-pill.good {
+  color: #d8f0cb;
+  background: rgba(143, 194, 118, 0.22);
+}
+
+.delta-pill.bad {
+  color: #ffd1c9;
+  background: rgba(196, 91, 79, 0.22);
+}
+
+.season-marker {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 6px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(235, 215, 186, 0.12);
+}
+
+.season-text {
+  margin: 0;
+  color: #e7d3ac;
+  font-size: 1rem;
+}
+
+.card-stage {
+  display: grid;
+  gap: 18px;
+}
+
+.card-panel,
+.end-panel {
+  display: grid;
+  gap: 20px;
+  padding: 24px;
+  border-radius: 28px;
+  background:
+    linear-gradient(145deg, rgba(77, 46, 39, 0.82), rgba(25, 17, 16, 0.94));
+  border: 1px solid rgba(235, 215, 186, 0.18);
+}
+
+.card-panel {
+  grid-template-columns: 112px 1fr;
+  align-items: start;
+}
+
+.portrait-frame {
+  display: grid;
+  gap: 10px;
+}
+
+.portrait-image {
+  display: grid;
+  place-items: center;
+  width: 112px;
+  height: 112px;
+  border-radius: 24px;
+  border: 1px dashed rgba(235, 215, 186, 0.32);
+  background:
+    linear-gradient(135deg, rgba(234, 198, 127, 0.08), rgba(255, 255, 255, 0.02)),
+    rgba(255, 255, 255, 0.03);
+}
+
+.portrait-mark {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.portrait-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  display: block;
+}
+
+.card-copy p:last-child,
+.summary-block p,
+.historian-block p {
+  margin: 0;
+}
+
+.choice-grid {
+  gap: 16px;
+}
+
+.choice-card {
+  flex: 1;
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+  border-radius: 22px;
+  text-align: left;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.choice-card:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+.choice-card:hover,
+.choice-card:focus-visible,
+.ghost-button:hover,
+.ghost-button:focus-visible,
+.primary-button:hover,
+.primary-button:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(235, 215, 186, 0.45);
+  background: rgba(255, 255, 255, 0.07);
+  outline: none;
+}
+
+.choice-side {
+  color: #ceb996;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.75rem;
+}
+
+.preview-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.preview-chip {
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.82rem;
+  color: #f2e6cd;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.end-panel,
+.footer-note {
+  gap: 14px;
+}
+
+.summary-block,
+.historian-block {
+  display: grid;
+  gap: 12px;
+}
+
+.historian-block {
+  padding-top: 8px;
+  border-top: 1px solid rgba(235, 215, 186, 0.14);
+}
+
+.note-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(4, 3, 3, 0.72);
+  backdrop-filter: blur(3px);
+}
+
+.note-card {
+  width: min(760px, 100%);
+  position: relative;
+  padding: 20px;
+  border-radius: 24px;
+  border: 1px solid rgba(235, 215, 186, 0.18);
+  background:
+    linear-gradient(145deg, rgba(77, 46, 39, 0.96), rgba(25, 17, 16, 0.98));
+  box-shadow: 0 24px 90px rgba(0, 0, 0, 0.35);
+}
+
+.note-card p:last-child {
+  margin-bottom: 0;
+}
+
+.note-body {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.note-citation {
+  font-size: 13px;
+  color: #d5c3a2;
+}
+
+.note-hint {
+  margin: 18px 0 0;
+  color: rgba(206, 185, 150, 0.8);
+  font-size: 0.78rem;
+  text-align: right;
+}
+
+.note-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: start;
+  margin-bottom: 12px;
+}
+
+.note-header h3 {
+  margin: 0;
+}
+
+.credits-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(8, 6, 6, 0.58);
+}
+
+.credits-card {
+  width: min(980px, 100%);
+  max-height: min(84vh, 920px);
+  overflow: auto;
+  padding: 24px;
+  border-radius: 28px;
+  border: 1px solid rgba(235, 215, 186, 0.18);
+  background:
+    linear-gradient(145deg, rgba(77, 46, 39, 0.96), rgba(25, 17, 16, 0.98));
+  box-shadow: 0 24px 90px rgba(0, 0, 0, 0.35);
+}
+
+.credits-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.credits-section h4 {
+  margin: 0 0 10px;
+}
+
+.credits-section p {
+  margin: 0 0 8px;
+}
+
+.footer-note {
+  justify-content: space-between;
+  margin-top: 18px;
+  color: #ceb996;
+  font-size: 0.92rem;
+}
+
+kbd {
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 900px) {
+  .app-shell {
+    padding: 16px;
+  }
+
+  .landing-card {
+    padding: 24px;
+    border-radius: 24px;
+  }
+
+  .game-frame {
+    padding: 18px;
+    border-radius: 22px;
+  }
+
+  .game-frame.menu-mode {
+    padding: 0;
+  }
+
+  .topbar,
+  .choice-grid,
+  .footer-note {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .stats-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .card-panel {
+    grid-template-columns: 88px 1fr;
+    gap: 16px;
+  }
+
+  .portrait-image {
+    width: 88px;
+    height: 88px;
+    border-radius: 18px;
+  }
+
+  .portrait-mark {
+    font-size: 2rem;
+  }
+
+  .card-panel {
+    justify-items: start;
+  }
+
+  .ghost-button,
+  .primary-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .title-screen__overlay {
+    padding: 12px;
+  }
+
+  .title-screen__content {
+    padding: 22px;
+    border-radius: 24px;
+  }
+
+  .app-shell {
+    padding: 10px;
+  }
+
+  .landing-card {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .landing-hook {
+    font-size: 1.15rem;
+  }
+
+  .landing-copy {
+    font-size: 0.98rem;
+  }
+
+  .game-frame {
+    padding: 14px;
+    border-radius: 18px;
+  }
+
+  .game-frame.menu-mode {
+    padding: 0;
+  }
+
+  .topbar {
+    margin-bottom: 18px;
+  }
+
+  .topbar h1 {
+    font-size: 1.9rem;
+  }
+
+  .eyebrow {
+    font-size: 0.72rem;
+  }
+
+  .stats-panel {
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .stat-card {
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .stat-header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 8px;
+    align-items: center;
+    font-size: 0.95rem;
+  }
+
+  .card-panel,
+  .end-panel {
+    padding: 16px;
+    border-radius: 20px;
+    gap: 16px;
+  }
+
+  .card-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .note-overlay {
+    padding: 12px;
+    place-items: center;
+  }
+
+  .note-card {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .note-header {
+    flex-direction: column;
+  }
+
+  .credits-overlay {
+    padding: 12px;
+  }
+
+  .credits-card {
+    padding: 16px;
+    border-radius: 20px;
+  }
+
+  .credits-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .portrait-frame {
+    width: 100%;
+  }
+
+  .portrait-image {
+    width: 100%;
+    max-width: none;
+    height: 160px;
+  }
+
+  .card-copy h2,
+  .end-panel h2 {
+    font-size: 1.45rem;
+  }
+
+  .season-marker {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .season-text {
+    font-size: 0.95rem;
+  }
+
+  .choice-card {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .preview-row {
+    gap: 6px;
+  }
+
+  .preview-chip {
+    font-size: 0.76rem;
+  }
+
+  .footer-note {
+    margin-top: 14px;
+    font-size: 0.84rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .title-screen__overlay {
+    padding: 10px;
+  }
+
+  .title-screen__content {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .stats-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar h1 {
+    font-size: 1.7rem;
+  }
+
+  .portrait-image {
+    height: 132px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}
+</style>
+</head>
+<body>
+  <div class="app-shell">
+    <main class="game-frame menu-mode">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">1348-1349 • Council Chronicle</p>
+          <h1>The Plague Year</h1>
+        </div>
+        <button class="ghost-button" id="restart-button" type="button">Restart</button>
+      </header>
+      <section class="stats-panel" id="stats-panel"></section>
+      <section id="content-root"></section>
+      <aside class="footer-note">
+        <p>Keyboard support: press <kbd>A</kbd> for the left choice and <kbd>D</kbd> for the right choice.</p>
+      </aside>
+    </main>
+  </div>
+  <script type="application/json" id="phases-data">[{"id":"rumors","label":"Rumors","season":"Late Summer, 1348"},{"id":"approach","label":"Approach","season":"Autumn, 1348"},{"id":"arrival","label":"Arrival","season":"Winter, 1348-49"},{"id":"peak","label":"Peak","season":"Lent, 1349"},{"id":"aftermath","label":"Aftermath","season":"Spring, 1349"}]</script>
+  <script type="application/json" id="cards-data">[{"id":"rumors-01","phase":"rumors","character":"The Merchant","emoji":"🏪","text":"Traders from Genoa have arrived with wool and news. They say a terrible pestilence follows behind them, sweeping through port cities. Do we let them trade?","leftChoice":{"label":"Bar the gates to outside trade.","effects":{"order":1,"wealth":-2}},"rightChoice":{"label":"Trade must continue.","effects":{"wealth":1,"death":1}},"historianNote":"The Black Death traveled along trade routes from the East. Gabriele de' Mussi's contemporary account describes Genoese ships carrying the plague from Caffa to Italian ports (Horrox, pp. 14-26). Milan, under the authoritarian Visconti government, sealed its gates early and suffered significantly lower mortality than other major Italian cities (Ziegler, pp. 53-54). But most towns depended on trade for food and survival, making closure a genuine risk."},{"id":"rumors-02","phase":"rumors","character":"The Priest","emoji":"⛪","text":"Word of pestilence in the south has reached your parish priest. He urges the council to declare a day of fasting and prayer. Some councilors think this will only spread fear.","leftChoice":{"label":"No public declarations yet.","effects":{"faith":-1,"order":1}},"rightChoice":{"label":"Declare the fast.","effects":{"faith":1,"order":-1}},"historianNote":"Public religious responses were the default medieval reaction to crisis. Horrox's collection includes numerous accounts of organized prayer, fasting, and processions as first-line responses to the plague (Horrox, pp. 111-58). Prayer and fasting were not seen as passive - they were understood as the most powerful intervention available, directed at what contemporaries believed was the actual cause of plague: God's judgment."},{"id":"rumors-03","phase":"rumors","character":"The Rat Catcher","emoji":"🐀","text":"The rat catcher reports an unusual surge in dead rats near the docks and granary. He wants coin to hire extra hands for a thorough clearing. It's not cheap.","leftChoice":{"label":"We have bigger concerns. Deny the funds.","effects":{"death":1}},"rightChoice":{"label":"Pay him. Clean the docks and granary.","effects":{"wealth":-1,"death":-1}},"historianNote":"No one in 1348 understood that fleas on rats carried Yersinia pestis - the bacterium was not identified until Alexandre Yersin's work in Hong Kong in 1894. The rat catcher's instinct was accidentally correct, but for the wrong reasons. Some practical sanitation measures helped even without germ theory. The connection between rats, fleas, and plague is discussed in Ziegler, pp. 16-28."},{"id":"rumors-04","phase":"rumors","character":"The Tax Collector","emoji":"📜","text":"You could levy a special tax now to stockpile grain and medicine while supply lines are still open. The townspeople won't like it - times are already hard.","leftChoice":{"label":"No new taxes. The rumors may come to nothing.","effects":{"order":1,"wealth":-1}},"rightChoice":{"label":"Levy the tax. Stockpile while we can.","effects":{"wealth":1,"order":-1}},"historianNote":"Towns that stockpiled food and supplies before the plague arrived fared better during the worst months when trade collapsed. But medieval taxation was deeply resented. Horrox documents how the economic disruption often preceded the plague itself, as trade routes shut down and prices rose (Horrox, pp. 227-58). Tuchman describes the compounding of plague with pre-existing famine and economic instability (Tuchman, pp. 92-96)."},{"id":"rumors-05","phase":"rumors","character":"The Scholar","emoji":"📖","text":"A university man passing through claims the pestilence is caused by a foul conjunction of planets and corrupted air. He offers to advise the council - for a modest fee.","leftChoice":{"label":"We don't need stargazers. Send him on.","effects":{}},"rightChoice":{"label":"Hire him. Any knowledge may help.","effects":{"wealth":-1,"order":1}},"historianNote":"The miasma theory - that disease spread through corrupted air - was the leading medical explanation. In October 1348, forty-nine masters of the Paris medical faculty formally attributed the plague to a conjunction of Saturn, Jupiter, and Mars under Aquarius in 1345 ('The Report of the Paris Medical Faculty, October 1348,' in Horrox, pp. 158-63). The theory was wrong, but it led to some helpful practices like burning aromatic herbs and avoiding swamps."},{"id":"rumors-06","phase":"rumors","character":"The Innkeeper","emoji":"🍺","text":"Travelers keep bringing darker news each week. The innkeeper says fear is already hurting business. He wants the council to publicly declare the town safe and healthy.","leftChoice":{"label":"Issue the declaration. Calm people down.","effects":{"wealth":1,"order":1,"death":1}},"rightChoice":{"label":"We won't lie. Say nothing official.","effects":{"wealth":-1,"faith":1}},"historianNote":"Many towns downplayed or denied the plague's approach to protect trade. Boccaccio describes how Florence's government initially failed to act effectively despite early warnings (Boccaccio, Introduction to Day 1). The short-term economic benefit of denial was real, but it left populations unprepared when the plague arrived. Giovanni Villani's chronicle records Florence's initial attempts to suppress alarming news (Aberth, pp. 19-20)."},{"id":"approach-01","phase":"approach","character":"The Refugees","emoji":"👨‍👩‍👧‍👦","text":"Families from a stricken village are at your gates, begging for shelter. Among them are children. Your watchmen say some look feverish.","leftChoice":{"label":"We cannot risk it. Turn them away.","effects":{"death":-1,"faith":-1}},"rightChoice":{"label":"Christian charity demands we help.","effects":{"faith":1,"death":2,"wealth":-1}},"historianNote":"This was one of the cruelest dilemmas of the plague years. Chronicles record gates shut against desperate refugees, but also towns that took in the sick out of compassion - often at terrible cost. Agnolo di Tura of Siena describes burying his own five children with his own hands, and the general abandonment of the sick by their families (Horrox, pp. 28-29). Neither choice was obviously right in the moment."},{"id":"approach-02","phase":"approach","character":"The Flagellants","emoji":"⛓️","text":"A band of penitents arrives, whipping themselves bloody in the streets. They preach that the plague is God's punishment and only radical penance can stop it. The people are drawn to them - or horrified.","leftChoice":{"label":"Drive them out.","effects":{"order":1,"faith":-1}},"rightChoice":{"label":"Let them preach.","effects":{"faith":1,"order":-1,"death":1}},"historianNote":"The flagellant movement swept Europe in 1348-49. Horrox includes the account of Heinrich of Herford, who describes the flagellants' rituals in detail: public processions of 33 1/2 days (for the years of Christ's life), twice-daily self-scourging, and increasingly radical theological claims (Horrox, pp. 149-53). Pope Clement VI condemned the movement in the bull Inter sollicitudines (October 1349), and most towns eventually expelled them. Their mass gatherings almost certainly spread the plague."},{"id":"approach-03","phase":"approach","character":"The Watchman","emoji":"🔔","text":"The captain of the watch wants to quarantine all new arrivals in tents outside the walls for forty days before entry. Merchants say this will strangle trade completely.","leftChoice":{"label":"Forty days is too long. Allow entry with inspection.","effects":{"wealth":1,"death":1}},"rightChoice":{"label":"Enforce the full quarantine.","effects":{"wealth":-2,"death":-2,"order":1}},"historianNote":"The word 'quarantine' comes from the Italian quarantina - forty days. The Republic of Ragusa (modern Dubrovnik) formally established the first legislated quarantine on 27 July 1377, requiring travelers from plague-infected areas to isolate for thirty days on the island of Mrkan before entering the city (Tomic, ch. 1). Venice extended the period to forty days in 1448. The practice was one of the few measures that actually reduced plague mortality. Ad hoc isolation of travelers was attempted earlier during the first outbreak."},{"id":"approach-04","phase":"approach","character":"The Herbalist","emoji":"🌿","text":"A local woman known for her remedies offers to prepare bundles of herbs and vinegar rinses for every household. The cost is modest. The physician dismisses her as ignorant.","leftChoice":{"label":"Trust the physician. Decline her offer.","effects":{}},"rightChoice":{"label":"Buy the bundles. It can't hurt.","effects":{"wealth":-1,"faith":1,"death":-1}},"historianNote":"Herbal remedies and vinegar washes were widely used. While they couldn't cure plague, some aromatic herbs may have repelled fleas - accidentally helpful. The Paris medical faculty recommended burning aromatic substances and using vinegar as preventatives (Horrox, pp. 158-63). Folk healers, often women, were important medical providers for ordinary people who couldn't afford university-trained physicians. See also Byrne, pp. 37-52, on popular medicine during the Black Death."},{"id":"approach-05","phase":"approach","character":"The Mason","emoji":"🧱","text":"A master mason offers to build a pest-house outside the walls where the sick can be isolated and tended. It would take weeks and cost a great deal.","leftChoice":{"label":"Too expensive and too slow.","effects":{"death":1}},"rightChoice":{"label":"Build it. We'll need it.","effects":{"wealth":-2,"death":-1,"order":1}},"historianNote":"Dedicated plague hospitals (lazarettos) became common after the Black Death, though few towns built them in advance of the first outbreak. Venice established the first permanent lazaretto on the island of Santa Maria di Nazareth in 1423; the Republic of Ragusa had set up temporary plague hospitals even earlier on the island of Mljet (Tomic, ch. 2). Towns that improvised isolation housing during the plague fared somewhat better, but the infrastructure barely existed in 1348."},{"id":"approach-06","phase":"approach","character":"The Bishop","emoji":"⛪","text":"The bishop wants to lead a solemn procession through the streets carrying the relics of your town's patron saint. He believes it will strengthen the people's faith and God's protection.","leftChoice":{"label":"Forbid public gatherings.","effects":{"faith":-1,"death":-1}},"rightChoice":{"label":"Let them process.","effects":{"faith":2,"death":2}},"historianNote":"Religious processions were a standard response to crisis, and deeply meaningful to medieval Christians. But they were also mass gatherings in narrow streets - ideal conditions for plague transmission. Clement VI eventually discouraged large gatherings, but many processions had already taken place. Louis Heyligen, writing from Avignon, describes processions ordered by the Pope himself before the dangers of gatherings were understood (Horrox, pp. 41-45)."},{"id":"approach-07","phase":"approach","character":"The Steward","emoji":"🗝️","text":"The lord's steward arrives from the manor. His lordship has already fled to the countryside and orders you to send supplies after him. The town's stores are limited.","leftChoice":{"label":"Send what he demands. He is our lord.","effects":{"wealth":-2,"order":1}},"rightChoice":{"label":"Refuse. The town's need is greater.","effects":{"wealth":1,"order":-1}},"historianNote":"The flight of the nobility was one of the most socially corrosive effects of the plague. Boccaccio describes the wealthy abandoning Florence at length in his Introduction to Day 1 (Boccaccio, pp. 5-14). Marchione di Coppo Stefani's chronicle confirms that those who could afford to leave Florence did so, stripping the city of leadership at the worst possible moment. Those left behind noticed - and remembered. The resentment fueled later demands for social change."},{"id":"arrival-01","phase":"arrival","character":"The Physician","emoji":"⚕️","text":"A doctor from Montpellier offers his services. He is learned and confident, but expensive. He prescribes bloodletting, theriac, and aromatic fires. His cures are unproven.","leftChoice":{"label":"We cannot afford him.","effects":{}},"rightChoice":{"label":"Hire him. The people need hope.","effects":{"wealth":-2,"death":-1,"faith":1}},"historianNote":"University-trained physicians had little effective treatment for plague. Bloodletting and theriac (an ancient compound) were standard but useless against Yersinia pestis. The Paris medical faculty's report recommended aromatic fires, dietary regulation, and avoiding bathing, among other measures (Horrox, pp. 158-63). Guy de Chauliac, physician to Clement VI at Avignon, provides one of the most honest medical accounts, admitting that doctors' treatments were largely ineffective and that he himself contracted the plague (Horrox, pp. 176-77)."},{"id":"arrival-02","phase":"arrival","character":"The Nun","emoji":"🙏","text":"The sisters at the local convent offer to nurse the sick. They know the risk. The abbess says it is their duty before God, but asks if the council can supply clean linens and food.","leftChoice":{"label":"We can't spare the supplies.","effects":{"faith":-1,"death":1}},"rightChoice":{"label":"Supply them. God bless their courage.","effects":{"wealth":-1,"faith":2,"death":-1}},"historianNote":"Religious orders, especially women's communities, provided much of the nursing care during the plague. Their mortality rates were devastating - some convents were entirely wiped out. Ziegler cites mortality rates among clergy and religious of 40-50% or higher, considerably above the general population, because their duties required close contact with the sick (Ziegler, pp. 119-31). The courage of those who stayed to tend the sick was widely remembered and honored in chronicles and memorial records."},{"id":"arrival-03","phase":"arrival","character":"The Magistrate","emoji":"⚖️","text":"The first plague cases are confirmed in the cloth-workers' quarter. The magistrate proposes sealing the entire street - no one in or out - until the sickness passes or they die.","leftChoice":{"label":"Seal the street. Contain it.","effects":{"death":-2,"order":-1,"faith":-1}},"rightChoice":{"label":"That's a death sentence. Let the healthy leave.","effects":{"faith":1,"death":2,"order":1}},"historianNote":"Household quarantine - sealing the sick inside their homes - was used in Milan under the Visconti government in 1348, which walled up houses containing plague victims, trapping healthy family members inside with the dying. Milan suffered significantly lower mortality as a result, though the ethical horror was recognized even at the time (Ziegler, pp. 53-54). The practice became standard policy in later outbreaks across Europe, including Elizabethan England."},{"id":"arrival-04","phase":"arrival","character":"The Apothecary","emoji":"⚗️","text":"Your apothecary is selling 'plague cures' at outrageous prices - ground emeralds, powdered unicorn horn, alchemical elixirs. People are buying desperately. He's getting rich.","leftChoice":{"label":"Let him sell. People want hope.","effects":{"order":-1,"faith":-1}},"rightChoice":{"label":"Regulate his prices and claims.","effects":{"order":1,"wealth":-1}},"historianNote":"Plague profiteering was widespread and documented. Fake remedies proliferated - Horrox includes contemporary lists of supposed cures ranging from powdered emeralds to theriac to Armenian bole (Horrox, pp. 171-85). Some towns attempted price controls on medicines and food; the Pistoia ordinances of 1348 are among the most detailed surviving examples of municipal plague regulation (Aberth, pp. 73-76). The fraud deepened social distrust during an already destabilizing crisis."},{"id":"arrival-05","phase":"arrival","character":"The Gravedigger","emoji":"⚰️","text":"Three families have lost members this week. The gravedigger says the churchyard can handle it - for now. But he wants to start digging additional plots while the ground is soft.","leftChoice":{"label":"Don't alarm people. Dig as needed.","effects":{"order":1,"death":1}},"rightChoice":{"label":"Dig ahead. Prepare for what's coming.","effects":{"order":-1,"faith":-1}},"historianNote":"The logistics of burial became one of the defining crises of the plague. Archaeological excavations of Black Death mass burial sites - including the well-documented East Smithfield cemetery in London - confirm the scale of the crisis described in literary sources. Towns that prepared in advance handled the peak somewhat better, but the sight of mass graves being dug in advance was psychologically devastating. See the discussion in Horrox, pp. 61-65, and Byrne, pp. 65-70."},{"id":"arrival-06","phase":"arrival","character":"The Parish Priest","emoji":"✝️","text":"Your parish priest is exhausted. He has been hearing confessions and giving last rites day and night. He asks whether laypeople might be permitted to hear deathbed confessions in extremis.","leftChoice":{"label":"Only ordained priests may hear confession.","effects":{"faith":1,"order":1}},"rightChoice":{"label":"In this extremity, allow it.","effects":{"faith":-1,"order":-1,"death":-1}},"historianNote":"The massive death toll among clergy created a sacramental crisis. Priests who faithfully attended the dying had extremely high mortality - Ziegler estimates clergy death rates of 40-50% or higher in many dioceses (Ziegler, pp. 119-31). Some bishops authorized emergency measures, including lay confession. Ralph of Shrewsbury, Bishop of Bath and Wells, issued a famous letter in January 1349 authorizing lay confession when no priest was available: 'if on the point of death they cannot secure the services of a properly ordained priest, they should make confession of their sins ... to any lay person' (Horrox, pp. 271-72)."},{"id":"arrival-07","phase":"arrival","character":"The Tavernkeeper","emoji":"🍷","text":"The tavern is packed every night now. People are drinking heavily, spending wildly. 'Eat, drink, for tomorrow we die.' The revelry is growing louder - and fights more frequent.","leftChoice":{"label":"Close the tavern. Order curfew.","effects":{"order":2,"faith":1,"wealth":-1}},"rightChoice":{"label":"Let them have their comfort.","effects":{"order":-1,"death":1,"wealth":1}},"historianNote":"Boccaccio describes two opposite responses to the plague in his Introduction to Day 1: strict sobriety and moderation on one hand, and frantic indulgence on the other - those who 'maintained that there was no better medicine against the plague than to drink heavily, enjoy life to the full ... and shrug the whole thing off as a joke' (Boccaccio, Introduction). Both were attempts to cope. Thucydides described nearly identical behavior during the Plague of Athens - a parallel that Boccaccio, who knew his classics, may have intentionally echoed."},{"id":"peak-01","phase":"peak","character":"The Jewish Elder","emoji":"✡️","text":"Angry voices blame the Jews for poisoning wells. A mob gathers outside the Jewish quarter. They demand the council hand over the Jews for 'justice.'","leftChoice":{"label":"Protect them. The Pope himself has condemned this slander.","effects":{"order":-1,"faith":2}},"rightChoice":{"label":"Give the mob what they want.","effects":{"order":-2,"faith":-2,"death":1}},"historianNote":"Pogroms accompanied the Black Death across Europe, especially in German-speaking lands. Pope Clement VI issued two papal bulls in 1348 condemning the violence: Sicut Judeis (4 July 1348), reaffirming traditional papal protection of Jews, and Quamvis Perfidiam (26 September 1348), which directly addressed the plague accusations, declaring that Jews could not be responsible because 'through many parts of the world the same plague ... has afflicted and afflicts the Jews themselves and many other races who have never lived alongside them' (Horrox, pp. 219-22). Despite Clement's intervention, the pogroms continued - Samuel Cohn argues they were driven less by popular rage than by elites seeking to seize Jewish property and cancel debts (Cohn, 'Burning,' pp. 3-36). Towns under Clement's direct authority that protected their Jewish communities showed both moral and practical wisdom - mob violence destabilized communities without slowing the plague."},{"id":"peak-02","phase":"peak","character":"The Gravedigger","emoji":"💀","text":"The dead are piling faster than anyone can bury them. The gravedigger wants permission to dig a mass pit outside the walls. There is no time for individual Christian burial.","leftChoice":{"label":"Maintain proper burial. Every soul deserves it.","effects":{"faith":1,"death":2,"order":-1}},"rightChoice":{"label":"Dig the pit.","effects":{"faith":-1,"death":-1,"order":1}},"historianNote":"Mass burial pits have been confirmed by archaeology across Europe - the East Smithfield cemetery in London and sites in Provence and Tuscany among them. Boccaccio's description of Florentine burials is the most famous literary account: bodies stacked in trenches 'just the way one makes lasagne with layers of pasta and cheese' (Boccaccio, Introduction). Agnolo di Tura of Siena wrote that 'in many places in Siena great pits were dug and piled deep with the multitude of dead' (Horrox, pp. 28-29). The abandonment of individual burial rites struck at the heart of medieval Christian practice around death and salvation."},{"id":"peak-03","phase":"peak","character":"The Deserters","emoji":"🏃","text":"Several wealthy families are packing to flee to their country estates. If they go, they take their money, their influence, and their servants with them. The poor cannot leave.","leftChoice":{"label":"Let them go. We can't stop them.","effects":{"wealth":-2,"order":-1}},"rightChoice":{"label":"Close the gates. No one leaves.","effects":{"order":-1,"faith":-1,"wealth":-1}},"historianNote":"The flight of the wealthy was universal and deeply resented. Boccaccio describes it extensively in his Introduction. Marchione di Coppo Stefani's Cronaca fiorentina confirms the pattern in Florence. It stripped towns of leadership and resources at the worst possible moment. But forced quarantine of the healthy was also contested - Tuchman discusses the social tensions between containment and individual freedom throughout her chapter on the plague (Tuchman, pp. 92-125)."},{"id":"peak-04","phase":"peak","character":"The Laborer","emoji":"🔨","text":"So many workers have died that the survivors are demanding double wages. Without them, crops rot and workshops stand empty. The old wage laws say you must refuse.","leftChoice":{"label":"Hold the line. Enforce the old wages.","effects":{"order":1,"wealth":-1,"faith":-1}},"rightChoice":{"label":"Pay what they ask. We need them.","effects":{"wealth":-2,"order":-1,"faith":1}},"historianNote":"The post-plague labor shortage transformed European economics. England's Parliament passed the Statute of Laborers in 1351, attempting to freeze wages at pre-plague levels - the full text is available through the Fordham Internet Medieval Sourcebook. The Statute was widely resented and ultimately unenforceable, contributing directly to the Peasants' Revolt of 1381 (Cohn, Lust, ch. 9). Similar wage-control legislation appeared across Europe. Workers who survived could demand higher wages, better conditions, and freedom of movement."},{"id":"peak-05","phase":"peak","character":"The Dying Priest","emoji":"✝️","text":"Your parish priest has fallen ill. He may not survive the week. There is no replacement nearby. Without a priest, the dying cannot receive last rites.","leftChoice":{"label":"Send for a priest from the next town.","effects":{"faith":1,"death":1}},"rightChoice":{"label":"A layperson must do what they can.","effects":{"faith":-1,"order":-1}},"historianNote":"Clergy died at higher rates than the general population because their duties required close contact with the sick and dying. Entire parishes lost their priests. In the diocese of Bath and Wells alone, 47.6% of beneficed clergy died (Ziegler, pp. 119-31). The diocese of Exeter lost approximately half its parish priests. The Church struggled to replace them, and the quality of replacement clergy - hastily ordained and poorly trained - became a lasting grievance that fed pre-Reformation discontent. See also Horrox, pp. 268-73, on episcopal responses to the clergy shortage."},{"id":"peak-06","phase":"peak","character":"The Orphans","emoji":"👧","text":"Dozens of children wander the streets with no living parents. They are hungry, frightened, and some may be carrying the sickness. The convent is already overwhelmed.","leftChoice":{"label":"House them in the empty guild hall.","effects":{"wealth":-1,"faith":2,"death":1}},"rightChoice":{"label":"We cannot take on more mouths.","effects":{"faith":-2,"order":-1}},"historianNote":"Orphaned children were one of the most visible and heartbreaking consequences of the plague. Agnolo di Tura's chronicle from Siena - 'I ... buried my five children with my own hands' - is among the most devastating firsthand accounts (Horrox, pp. 28-29). Post-plague Europe saw a rise in charitable foundations specifically for orphan care. Florence's Ospedale degli Innocenti, founded in 1419, is the most famous example, though it postdates the first outbreak by decades."},{"id":"peak-07","phase":"peak","character":"The Looters","emoji":"🔥","text":"Empty houses are being looted. Thieves strip the homes of the dead and even the dying. Your remaining watchmen are exhausted and outnumbered.","leftChoice":{"label":"Declare martial law. Hang a looter publicly.","effects":{"order":2,"faith":-1}},"rightChoice":{"label":"Focus the watch on protecting the living.","effects":{"order":-1,"wealth":-1}},"historianNote":"Looting and property crime surged during plague outbreaks as normal social controls broke down. The Pistoia ordinances of May 1348 specifically addressed theft from plague houses (Aberth, pp. 73-76). Inheritance disputes after the plague were enormous - entire family lines had been wiped out, leaving property in legal chaos. Horrox discusses the long-term economic and legal consequences of mass death in her final section on consequences (Horrox, pp. 227-316)."},{"id":"peak-08","phase":"peak","character":"The Flagellant Leader","emoji":"⛓️","text":"The flagellants you admitted weeks ago now openly defy the bishop, preaching that the clergy are corrupt and God speaks through their suffering alone. They are gathering followers.","leftChoice":{"label":"Expel them now, by force if necessary.","effects":{"order":1,"faith":-1,"death":-1}},"rightChoice":{"label":"The people need them. Let them stay.","effects":{"order":-2,"faith":-1,"death":1}},"historianNote":"The flagellant movement frequently turned anti-clerical and anti-authoritarian. In several German cities, flagellants led attacks on Jewish communities and defied both civil and Church authority. Clement VI's bull Inter sollicitudines (October 1349) gave towns legal grounds to expel them (Horrox, pp. 150-53). Jean de Venette's chronicle describes their increasingly radical claims and the Church's growing alarm (Aberth, pp. 80-82). Cohn argues that the flagellant movement was significantly entangled with the anti-Jewish pogroms in German-speaking lands (Cohn, 'Burning,' pp. 18-22).","requires":{"cardId":"approach-02","choice":"right"}},{"id":"aftermath-01","phase":"aftermath","character":"The Watchman","emoji":"🔔","text":"No new cases in two weeks. The watchman asks: do we reopen the gates? Traders are waiting. But the plague could return.","leftChoice":{"label":"Keep the gates closed another month.","effects":{"death":-1,"wealth":-2}},"rightChoice":{"label":"Reopen. The town needs trade to survive.","effects":{"wealth":2,"death":1}},"historianNote":"The plague receded in waves and often returned - major recurrences struck Europe in 1361 (the 'pestis secunda'), 1369, and periodically thereafter for centuries. Towns that reopened too quickly sometimes suffered secondary outbreaks. The Republic of Ragusa's quarantine legislation of 1377 was specifically designed to address this problem of recurrence (Tomic, ch. 1). But prolonged isolation meant economic collapse, and most towns reopened cautiously, driven by hunger and the need to rebuild."},{"id":"aftermath-02","phase":"aftermath","character":"The Merchant","emoji":"🏪","text":"With so many dead, abandoned property and goods are everywhere. The merchant proposes the council claim all unclaimed property and sell it to refill the treasury.","leftChoice":{"label":"Wait for heirs to come forward. Respect the dead.","effects":{"faith":1,"wealth":-1,"order":1}},"rightChoice":{"label":"Seize and sell. The living need it more.","effects":{"wealth":2,"faith":-1,"order":-1}},"historianNote":"Inheritance chaos after the plague was enormous. With entire families dead, property claims became a legal and moral tangle. Towns, churches, and lords all competed for unclaimed estates. The massive bequests to the Church by dying plague victims - and subsequent disputes over them - reshaped ecclesiastical wealth. Horrox discusses post-plague property disputes and their long-term economic effects (Horrox, pp. 227-316). Tuchman observes that the redistribution of property was one of the most significant long-term economic effects of the Black Death (Tuchman, pp. 119-20)."},{"id":"aftermath-03","phase":"aftermath","character":"The Laborer","emoji":"🔨","text":"The surviving workers refuse to return to the old terms. They want higher wages, shorter hours, and the right to leave for better offers. The old laws say otherwise.","leftChoice":{"label":"Enforce the old laws. Order must be restored.","effects":{"order":1,"wealth":1,"faith":-2}},"rightChoice":{"label":"The world has changed. Negotiate new terms.","effects":{"order":-1,"wealth":-1,"faith":1}},"historianNote":"This is one of the most important long-term consequences of the Black Death. England's Statute of Laborers (1351) tried to freeze wages at pre-plague levels - the full text is available through the Fordham Internet Medieval Sourcebook. It was bitterly resented and contributed directly to the Peasants' Revolt of 1381 (see Froissart's chronicle account, also available through Fordham). Cohn's Lust for Liberty argues that the post-plague labor movements across Europe represented a fundamental shift in social power, not mere disorder (Cohn, Lust, chs. 8-9). This topic is covered in course by Daileader, Lecture 9 ('Revolt in Town and Country')."},{"id":"aftermath-04","phase":"aftermath","character":"The New Priest","emoji":"✝️","text":"A replacement priest has arrived from the diocese. He is young, poorly trained, and was ordained in haste to fill the empty parishes. He means well but stumbles through the Mass.","leftChoice":{"label":"Accept him. A poor priest is better than none.","effects":{"faith":-1,"order":1}},"rightChoice":{"label":"Write the bishop. Demand someone qualified.","effects":{"faith":1,"order":-1}},"historianNote":"The hasty ordination of poorly qualified priests was a widespread post-plague problem. Archbishop Islip of Canterbury issued a letter in 1350 lamenting that parishes were being filled with 'unlettered and insufficiently educated' clergy because so many trained priests had died (Horrox, pp. 272-73). The quality of clergy declined sharply, feeding anticlericalism and demands for Church reform. Historians trace a direct line from this crisis to the reformist movements of the fifteenth century - Wycliffe, Hus, and ultimately Luther. This connects to Daileader, Lectures 11-12 in the course.","requires":{"cardId":"peak-05","choice":"any"}},{"id":"aftermath-05","phase":"aftermath","character":"The Bishop","emoji":"⛪","text":"The bishop proposes a solemn memorial Mass for all who died, followed by a feast day to celebrate the town's survival. It would be expensive but meaningful.","leftChoice":{"label":"A Mass, yes. No feast - we can't afford it.","effects":{"faith":1,"wealth":0,"order":0}},"rightChoice":{"label":"Both. The people need to grieve and to hope.","effects":{"faith":2,"wealth":-1,"order":1}},"historianNote":"Post-plague religious observances were deeply important to survivors. The massive investment in chantries (endowed Masses for the dead), memorial foundations, and votive art after 1348 reshaped Church finances and piety for generations. Ziegler discusses the surge in charitable and religious bequests (Ziegler, pp. 253-74). The psychological and spiritual processing of collective trauma through ritual is one of the most underappreciated aspects of medieval plague response."},{"id":"aftermath-06","phase":"aftermath","character":"The Newcomers","emoji":"🏠","text":"Families from other stricken areas want to settle in your half-empty town. They bring skills and labor you desperately need - but they are strangers.","leftChoice":{"label":"Welcome them. Fill the empty houses.","effects":{"wealth":2,"order":-1,"death":1}},"rightChoice":{"label":"Our own people first. Limit new arrivals.","effects":{"order":1,"wealth":-1}},"historianNote":"Population movement after the plague reshaped European demographics. Many towns actively recruited settlers to replace the dead. Serfs found they could flee to depopulated areas and negotiate better terms - a key factor in the gradual decline of serfdom in Western Europe. Horrox discusses post-plague labor mobility and its consequences (Horrox, pp. 287-316). The population of Europe would not recover to pre-plague levels until the sixteenth century (Ziegler, pp. 224-31)."},{"id":"aftermath-07","phase":"aftermath","character":"The Council","emoji":"🏛️","text":"The surviving council meets to take stock. Half your members are dead. The town is scarred but standing. What should guide rebuilding - caution or ambition?","leftChoice":{"label":"Caution. Rebuild what we had. Slowly.","effects":{"order":1,"faith":1,"wealth":-1}},"rightChoice":{"label":"The old world is gone. Build something new.","effects":{"wealth":1,"faith":-1,"order":-1}},"historianNote":"This final question captures the central historical argument about the Black Death's legacy. Was it purely destructive, or did it force a transformation that ultimately benefited survivors? The evidence points to both: post-plague Europe saw rising wages, greater social mobility, weakened feudal bonds, innovations in labor-saving technology, and the first stirrings of the world that would become the Renaissance. But it also saw recurrent plague, persistent trauma, and violent repression of workers' demands. David Herlihy's The Black Death and the Transformation of the West (Harvard UP, 1997) makes the case for transformation; Tuchman's A Distant Mirror emphasizes the catastrophe."}]</script>
+  <script type="application/json" id="art-map-data">{"rumors-01":"merchant_card.jpg","rumors-02":"priest_card.jpg","rumors-03":"rat_catcher_card.png","rumors-04":"taxcollector_card.jpg","rumors-05":"scholar_card.jpg","rumors-06":"innkeeper_card.jpg","approach-01":"refugees_card.png","approach-02":"flagellants_card.jpg","approach-03":"watchman_card.png","approach-04":"herbalist_card.jpg","approach-05":"mason_card.jpg","approach-06":"bishop_card.jpg","approach-07":"steward_card.jpg","arrival-01":"physician_card.jpg","arrival-02":"nun_card.jpg","arrival-03":"magistrate_card.jpg","arrival-04":"apothecary_card.jpg","arrival-05":"gravedigger_card.jpg","arrival-06":"priest_card.jpg","arrival-07":"innkeeper_card.jpg","peak-01":"jewishelder_card.jpg","peak-02":"gravedigger_card.jpg","peak-03":"deserters_card.jpg","peak-04":"laborer_card.jpg","peak-05":"priest_card.jpg","peak-06":"orphans_card.jpg","peak-07":"looters_card.png","peak-08":"flagellants_card.jpg","aftermath-01":"watchman_card.png","aftermath-02":"merchant_card.jpg","aftermath-03":"laborer_card.jpg","aftermath-04":"newpriest_card.jpg","aftermath-05":"bishop_card.jpg","aftermath-06":"newcomers_card.jpg","aftermath-07":"council_card.jpg"}</script>
+  <script type="application/json" id="historian-sources-data">["Rosemary Horrox, The Black Death","Samuel K. Cohn Jr., \"The Black Death and the Burning of Jews\"","Samuel K. Cohn Jr., Lust for Liberty","Philip Ziegler, The Black Death","Barbara Tuchman, A Distant Mirror","Giovanni Boccaccio, The Decameron","John Aberth, The Black Death: A Brief History with Documents","Joseph P. Byrne, The Black Death","Zlata Blazina Tomic and Vesna Blazina, Expelling the Plague","David Herlihy, The Black Death and the Transformation of the West","Fordham Internet History Sourcebooks"]</script>
+  <script type="application/json" id="art-credits-data">[["merchant_card.jpg","Tacuinum Sanitatis, \"Muscus\""],["priest_card.jpg","BL Royal 6 E VI, f. 246v"],["rat_catcher_card.png","BL Royal 13 B VIII, f. 21v"],["taxcollector_card.jpg","Quentin Matsys, The Moneylender and His Wife"],["scholar_card.jpg","Laurentius de Voltolina, Henry of Germany lecturing at Bologna"],["innkeeper_card.jpg","Tacuinum Sanitatis, tavern scene"],["refugees_card.png","Toggenburg Bible, plague of boils"],["flagellants_card.jpg","Chronique de Gilles Li Muisis, f. 16v"],["watchman_card.png","BL Royal 18 E I, f. 345"],["herbalist_card.jpg","Tacuinum Sanitatis, herbal gathering scene"],["mason_card.jpg","Bedford Hours, Tower of Babel"],["bishop_card.jpg","Corpus Christi procession, British Library"],["steward_card.jpg","Luttrell Psalter, shepherds scene"],["physician_card.jpg","Late medieval anatomical dissection scene"],["nun_card.jpg","Hotel-Dieu hospital scene"],["magistrate_card.jpg","Sachsenspiegel, election scene"],["apothecary_card.jpg","Canon of Medicine, 15th-century manuscript"],["gravedigger_card.jpg","Chronique de Gilles Li Muisis, plague burial"],["deserters_card.jpg","BL Royal 18 E II, f. 7"],["jewishelder_card.jpg","Codex Manesse, Susskind von Trimberg"],["orphans_card.jpg","Luttrell Psalter, child in wheelbarrow"],["looters_card.png","Froissart Chronicles, Bibliotheque royale de Belgique"],["laborer_card.jpg","Tres Riches Heures du Duc de Berry, June"],["newpriest_card.jpg","Discovery of St. Cuthbert incorrupt"],["newcomers_card.jpg","Froissart Chronicles, travelers with cart"],["council_card.jpg","Ambrogio Lorenzetti, Allegory of Good Government"]]</script>
+  <script type="application/json" id="title-screen-data">{"title":"The Plague Year","setting":"A Council Chronicle, 1348-1349","hookTitle":"The pestilence is coming.","paragraphs":["You are the town council of a small trading town in the year of our Lord 1348. The Black Death is sweeping across Europe, and every decision you make - whom to let through your gates, how to spend your dwindling coin, when to listen to your bishop or your physician - will shape whether your town survives.","There are no perfect choices. The people who lived through the plague did not have the answers either. They had trade-offs, incomplete knowledge, and impossible dilemmas. Now so do you."],"statIntro":"Four stats track the fate of your town: Death, Wealth, Order, and Faith. If any one fails, your town falls.","stats":[],"close":"Survive the full deck. A strong finish is possible; an untouched town is not."}</script>
+  <script type="application/json" id="about-screen-data">{"title":"For Parents & Teachers","intro":"The Plague Year is a historically grounded simulation game designed for secondary students studying the Black Death and late medieval Europe. It was developed as a supplementary resource for a homeschool Western Civilization course and is offered free for educational use.","sections":[{"heading":"What This Game Teaches","paragraphs":["The game places students in the role of a medieval town council facing the Black Death. Over approximately 30 decision cards, students encounter the actual dilemmas that medieval communities faced: whether to close the gates to trade, how to respond to religious movements like the flagellants, whether to enforce quarantine at the cost of individual liberty, and how to maintain social order when institutions are collapsing.","The game is designed to teach through trade-off reasoning rather than recall. There is no single correct path. Students learn that medieval people were making rational decisions with the knowledge and beliefs available to them, and that even good choices carried significant costs.","Every card includes a Historian's Note that appears after play, providing scholarly context, primary source references, and connections to broader historical developments."]},{"heading":"Standards Alignment","paragraphs":["CLEP Western Civilization I: directly supports medieval Church, late medieval crises, the Black Death, and its social consequences.","C3 Framework for Social Studies: D2.His.1.9-12, D2.His.4.9-12, D2.His.5.9-12, D2.His.14.9-12.","National History Standards, World History Era 5, Standard 5B: consequences of the Black Death and recurring plague pandemic."]},{"heading":"Grade Level","paragraphs":["Designed for grades 9-12. The content is appropriate for mature middle school students with teacher or parent guidance. Card text is concise and the game supports keyboard navigation."]},{"heading":"Historical Accuracy and Sources","paragraphs":["Card content and Historian's Notes draw on published primary source collections and peer-reviewed scholarship, including Rosemary Horrox, Samuel K. Cohn Jr., Philip Ziegler, Barbara Tuchman, John Aberth, and David Herlihy.","Primary sources referenced in the game include Pope Clement VI's bulls Sicut Judeis and Quamvis Perfidiam, the Report of the Paris Medical Faculty, the Statute of Laborers, and Bishop Ralph of Shrewsbury's letter authorizing lay confession."]},{"heading":"Approach to Faith and Religion","paragraphs":["The game treats medieval Christianity and the medieval Church fairly, in line with current academic historiography. Religious responses are presented as sincere and rational within the medieval worldview, not as superstition.","The persecution of Jewish communities is addressed through a card grounded in Clement VI's actual condemnation of the pogroms; protecting the Jewish community is presented as the morally and historically defensible choice."]},{"heading":"Card Art","paragraphs":["Card illustrations are drawn from public domain medieval manuscripts and paintings, including the Tacuinum Sanitatis, the Chronique de Gilles Li Muisis, the Luttrell Psalter, the Bedford Hours, the Codex Manesse, the Sachsenspiegel, and Ambrogio Lorenzetti's Allegory of Good Government."]},{"heading":"How to Use This Game","paragraphs":["Best used alongside primary source readings and followed by discussion or debrief.","Suggested pairing: read the plague introduction to Boccaccio's Decameron before play, then use the Historian's Notes after play as discussion prompts."]},{"heading":"Credits","paragraphs":["Game design and card content: Rachel Fierro.","Historical research and Historian's Notes: developed with reference to the cited sources.","This game is offered free for educational use. It is not affiliated with the College Board, CLEP, or any institution whose scholarship is cited."]}]}</script>
+  <script>
+const PHASES = JSON.parse(document.getElementById("phases-data").textContent);
+const cards = JSON.parse(document.getElementById("cards-data").textContent);
+const noteOverrides = {
+  "aftermath-03":
+    "This is one of the most important long-term consequences of the Black Death. England's Statute of Laborers (1351) tried to freeze wages at pre-plague levels — the full text is available through the Fordham Internet Medieval Sourcebook. It was bitterly resented and contributed directly to the Peasants' Revolt of 1381 (see Froissart's chronicle account, also available through Fordham). Cohn's Lust for Liberty argues that the post-plague labor movements across Europe represented a fundamental shift in social power, not mere disorder (Cohn, Lust, chs. 8–9).",
+  "aftermath-04":
+    "The hasty ordination of poorly qualified priests was a widespread post-plague problem. Archbishop Islip of Canterbury issued a letter in 1350 lamenting that parishes were being filled with 'unlettered and insufficiently educated' clergy because so many trained priests had died (Horrox, pp. 272–73). The quality of clergy declined sharply, feeding anticlericalism and demands for Church reform. Historians trace a direct line from this crisis to the reformist movements of the fifteenth century — Wycliffe, Hus, and ultimately Luther.",
+};
+cards.forEach((card) => {
+  if (noteOverrides[card.id]) {
+    card.historianNote = noteOverrides[card.id];
+  }
+});
+const cardArt = JSON.parse(document.getElementById("art-map-data").textContent);
+const historianSources = JSON.parse(document.getElementById("historian-sources-data").textContent);
+const artCredits = JSON.parse(document.getElementById("art-credits-data").textContent);
+const titleScreen = JSON.parse(document.getElementById("title-screen-data").textContent);
+const aboutScreen = JSON.parse(document.getElementById("about-screen-data").textContent);
+const titleArtSrc = "cards/council_card.jpg";
+const SCALE = 5;
+const initialStats = { death: 15, wealth: 55, order: 55, faith: 55 };
+const failThresholds = { death: 85, wealth: 10, order: 10, faith: 10 };
+const statMeta = {
+  death: { label: "Death", icon: "☠️", tone: "death", description: "How far the plague has spread. Starts low. If it maxes out, your town is devastated.", failText: "Mortality crosses the breaking point. The town survives only as a graveyard with walls." },
+  wealth: { label: "Wealth", icon: "💰", tone: "wealth", description: "Your food, trade, and treasury. If it bottoms out, famine and collapse follow.", failText: "Storehouses, coin, and trade all fail together. Hunger finishes what plague began." },
+  order: { label: "Order", icon: "⚖️", tone: "order", description: "Law, stability, and social cohesion. If it bottoms out, riots and anarchy follow.", failText: "Civic authority gives way. The council can no longer command the streets." },
+  faith: { label: "Faith", icon: "✝️", tone: "faith", description: "Morale, hope, and spiritual resilience. If it bottoms out, despair takes hold.", failText: "Hope and shared duty collapse. The town loses the will to endure together." },
+};
+const state = { deck: [], index: 0, stats: { ...initialStats }, history: [], outcome: null, statFeedback: {}, activeNote: null, showCredits: false, screen: "title", feedbackTimer: null, noteTimer: null, creditsTimer: null };
+const clamp = (value) => Math.max(0, Math.min(100, value));
+const scaleEffects = (effects) => Object.fromEntries(Object.entries(effects).map(([k, v]) => [k, v * SCALE]));
+function shuffleWithinPhases(deck) { return PHASES.flatMap((phase) => { const group = deck.filter((card) => card.phase === phase.id); const copy = group.slice(); for (let i = copy.length - 1; i > 0; i -= 1) { const j = Math.floor(Math.random() * (i + 1)); [copy[i], copy[j]] = [copy[j], copy[i]]; } return copy; }); }
+function feedbackTone(stat, delta) { return stat === "death" ? (delta < 0 ? "good" : "bad") : (delta > 0 ? "good" : "bad"); }
+function isNearFailure(stat, value) { return stat === "death" ? value >= failThresholds.death - 15 : value <= failThresholds[stat] + 15; }
+function statTooltip(meta, stat) { const threshold = stat === "death" ? `Failure at ${failThresholds.death} or more.` : `Failure at ${failThresholds[stat]} or less.`; return `${meta.description} ${threshold}`; }
+function isCitationChunk(chunk) { return /\((?:[^()]*pp\.|[^()]*ch\.|[^()]*Lecture|[^()]*Introduction|[^()]*Sourcebook|[^()]*UP, \d{4}|[^()]*\d{2,4}-\d{2,4}|[^()]*\d{4})[^()]*\)/.test(chunk); }
+function appendNoteText(target, text) { text.split(/(\([^()]*\))/g).filter(Boolean).forEach((chunk) => { const span = document.createElement("span"); if (isCitationChunk(chunk)) span.className = "note-citation"; span.textContent = chunk; target.appendChild(span); }); }
+function currentCard() { return state.deck[state.index] || null; }
+function currentPhase() { const card = currentCard(); return card ? PHASES.find((phase) => phase.id === card.phase) : null; }
+function currentArtSrc() { const card = currentCard(); if (!card) return null; const file = cardArt[card.id]; return file ? "cards/" + file : null; }
+function buildSummary(stats) { return [stats.death < 35 ? "The graves are many, but the town escaped total ruin." : stats.death < 60 ? "The year leaves visible scars in every quarter and family." : "Too many doors stayed shut. The town endured, but in mourning.", stats.wealth > 50 ? "Trade, rents, and stores recover enough to steady the town." : stats.wealth > 25 ? "Recovery is uneven. The market lives, but weakly." : "Coin, stores, and labor have all been spent nearly to nothing.", stats.order > 50 ? "The council preserved enough authority to direct rebuilding." : stats.order > 25 ? "Order survived through strain, fear, and compromise." : "The habits of obedience were badly damaged by crisis and panic.", stats.faith > 50 ? "Prayer and duty still give the survivors a language for grief." : stats.faith > 25 ? "Faith endured, but in a harder, wearier form." : "The plague has left spiritual exhaustion where confidence once stood."]; }
+function outcomeText(outcome) { return outcome.type === "victory" ? "The town reaches spring still standing, though altered by loss." : statMeta[outcome.stat].failText; }
+function resolveOutcome(stats, nextIndex, nextDeck) { if (stats.death >= failThresholds.death) return { type: "defeat", stat: "death" }; for (const stat of ["wealth", "order", "faith"]) { if (stats[stat] <= failThresholds[stat]) return { type: "defeat", stat }; } if (nextIndex >= nextDeck.length) return { type: "victory" }; return null; }
+function filterDeck(nextHistory) { return state.deck.filter((card, cardIndex) => { if (cardIndex <= state.index) return true; if (!card.requires) return true; const prerequisite = nextHistory.find((entry) => entry.cardId === card.requires.cardId); if (!prerequisite) return false; return card.requires.choice === "any" || prerequisite.choice === card.requires.choice; }); }
+function renderStats() { const panel = document.getElementById("stats-panel"); panel.innerHTML = ""; Object.entries(statMeta).forEach(([key, meta]) => { const delta = state.statFeedback[key]; const tone = delta ? feedbackTone(key, delta) : ""; const warning = isNearFailure(key, state.stats[key]); const tooltip = statTooltip(meta, key); const wrapper = document.createElement("div"); wrapper.className = "stat-card " + meta.tone + (warning ? " near-failure" : "") + (tone ? " flash-" + tone : ""); wrapper.title = tooltip; const header = document.createElement("div"); header.className = "stat-header"; const icon = document.createElement("span"); icon.textContent = meta.icon; const label = document.createElement("span"); label.textContent = meta.label; const value = document.createElement("span"); value.className = "stat-value"; value.append(String(state.stats[key])); if (delta) { const pill = document.createElement("span"); pill.className = "delta-pill " + tone; pill.textContent = (delta > 0 ? "+" : "") + delta; value.appendChild(pill); } header.append(icon, label, value); const bar = document.createElement("div"); bar.className = "stat-bar"; bar.title = tooltip; const fill = document.createElement("div"); fill.className = "stat-fill"; fill.style.width = state.stats[key] + "%"; bar.appendChild(fill); wrapper.append(header, bar); panel.appendChild(wrapper); }); }
+function renderTitle() { const root = document.getElementById("content-root"); root.innerHTML = ""; const frame = document.createElement("section"); frame.className = "title-screen"; frame.style.setProperty("--title-art", `url(${titleArtSrc})`); const overlay = document.createElement("div"); overlay.className = "title-screen__overlay"; const content = document.createElement("main"); content.className = "title-screen__content"; const eyebrow = document.createElement("p"); eyebrow.className = "eyebrow"; eyebrow.textContent = titleScreen.setting; const title = document.createElement("h1"); title.className = "landing-title"; title.textContent = titleScreen.title; const hook = document.createElement("p"); hook.className = "landing-hook"; hook.textContent = titleScreen.hookTitle; content.append(eyebrow, title, hook); titleScreen.paragraphs.forEach((paragraph) => { const p = document.createElement("p"); p.className = "landing-copy"; p.textContent = paragraph; content.appendChild(p); }); const intro = document.createElement("p"); intro.className = "landing-copy"; intro.textContent = titleScreen.statIntro; content.appendChild(intro); titleScreen.stats.forEach((line) => { const p = document.createElement("p"); p.className = "landing-copy"; p.textContent = line; content.appendChild(p); }); const close = document.createElement("p"); close.className = "landing-copy"; close.textContent = titleScreen.close; content.appendChild(close); const actions = document.createElement("div"); actions.className = "landing-actions"; const begin = document.createElement("button"); begin.className = "primary-button landing-button"; begin.type = "button"; begin.textContent = "Begin"; begin.addEventListener("click", beginGame); const hint = document.createElement("p"); hint.className = "landing-hint"; hint.textContent = "Press Enter to begin"; const about = document.createElement("button"); about.className = "text-link"; about.type = "button"; about.textContent = "For Parents & Teachers"; about.addEventListener("click", () => { state.screen = "about"; render(); }); actions.append(begin, hint, about); content.appendChild(actions); overlay.appendChild(content); frame.appendChild(overlay); root.appendChild(frame); }
+function renderAbout() { const root = document.getElementById("content-root"); root.innerHTML = ""; const frame = document.createElement("main"); frame.className = "landing-frame"; const card = document.createElement("section"); card.className = "landing-card about-card"; const eyebrow = document.createElement("p"); eyebrow.className = "eyebrow"; eyebrow.textContent = "For Parents & Teachers"; const title = document.createElement("h1"); title.className = "landing-title"; title.textContent = aboutScreen.title; const intro = document.createElement("p"); intro.className = "landing-copy"; intro.textContent = aboutScreen.intro; card.append(eyebrow, title, intro); aboutScreen.sections.forEach((section) => { const sectionNode = document.createElement("section"); sectionNode.className = "about-section"; const heading = document.createElement("h2"); heading.textContent = section.heading; sectionNode.appendChild(heading); section.paragraphs.forEach((paragraph) => { const p = document.createElement("p"); p.className = "landing-copy"; p.textContent = paragraph; sectionNode.appendChild(p); }); card.appendChild(sectionNode); }); const back = document.createElement("button"); back.className = "ghost-button landing-button"; back.type = "button"; back.textContent = "Back to Title Screen"; back.addEventListener("click", () => { state.screen = "title"; render(); }); card.appendChild(back); frame.appendChild(card); root.appendChild(frame); }
+function renderCard() { const root = document.getElementById("content-root"); root.innerHTML = ""; const card = currentCard(); const phase = currentPhase(); const artSrc = currentArtSrc(); const stage = document.createElement("section"); stage.className = "card-stage"; const panel = document.createElement("article"); panel.className = "card-panel"; const portraitFrame = document.createElement("div"); portraitFrame.className = "portrait-frame"; const portrait = document.createElement("div"); portrait.className = "portrait-image"; if (artSrc) { const img = document.createElement("img"); img.className = "portrait-photo"; img.alt = card.character + " scene"; img.src = artSrc; portrait.appendChild(img); } else { const mark = document.createElement("span"); mark.className = "portrait-mark"; mark.textContent = card.emoji; portrait.appendChild(mark); } portraitFrame.appendChild(portrait); const copy = document.createElement("div"); copy.className = "card-copy"; const seasonMarker = document.createElement("div"); seasonMarker.className = "season-marker"; const eyebrow = document.createElement("p"); eyebrow.className = "eyebrow"; eyebrow.textContent = card.character; const season = document.createElement("p"); season.className = "season-text"; season.textContent = phase.season; seasonMarker.append(eyebrow, season); const text = document.createElement("p"); text.textContent = card.text; copy.append(seasonMarker, text); panel.append(portraitFrame, copy); const choices = document.createElement("section"); choices.className = "choice-grid"; [{ key: "left", option: card.leftChoice, prompt: "Press A" }, { key: "right", option: card.rightChoice, prompt: "Press D" }].forEach(({ key, option, prompt }) => { const button = document.createElement("button"); button.className = "choice-card"; button.type = "button"; button.disabled = Boolean(state.activeNote || state.showCredits); button.addEventListener("click", () => choose(key)); const side = document.createElement("span"); side.className = "choice-side"; side.textContent = prompt; const strong = document.createElement("strong"); strong.textContent = option.label; const preview = document.createElement("div"); preview.className = "preview-row"; const effectKeys = Object.keys(option.effects); if (effectKeys.length === 0) { const chip = document.createElement("span"); chip.className = "preview-chip"; chip.textContent = "No obvious shift"; preview.appendChild(chip); } else { effectKeys.forEach((stat) => { const chip = document.createElement("span"); chip.className = "preview-chip"; chip.textContent = statMeta[stat].label; preview.appendChild(chip); }); } button.append(side, strong, preview); choices.appendChild(button); }); stage.append(panel, choices); root.appendChild(stage); }
+function renderOutcome() { const root = document.getElementById("content-root"); root.innerHTML = ""; const panel = document.createElement("section"); panel.className = "end-panel"; const eyebrow = document.createElement("p"); eyebrow.className = "eyebrow"; eyebrow.textContent = state.outcome.type === "victory" ? "Year End" : "Council Fallen"; const title = document.createElement("h2"); title.textContent = outcomeText(state.outcome); const summaryBlock = document.createElement("div"); summaryBlock.className = "summary-block"; buildSummary(state.stats).forEach((line) => { const p = document.createElement("p"); p.textContent = line; summaryBlock.appendChild(p); }); const historianBlock = document.createElement("div"); historianBlock.className = "historian-block"; const h3 = document.createElement("h3"); h3.textContent = "Historian's Notes"; const intro = document.createElement("p"); intro.textContent = "Medieval communities made decisions without modern epidemiology, antibiotics, or strong central administration. Their choices were morally serious, materially constrained, and often tragic."; historianBlock.append(h3, intro); state.history.forEach((entry) => { const p = document.createElement("p"); const strong = document.createElement("strong"); strong.textContent = entry.character + ":"; p.append(strong, " ", entry.note); historianBlock.appendChild(p); }); const button = document.createElement("button"); button.className = "primary-button"; button.type = "button"; button.textContent = "Continue to Credits"; button.addEventListener("click", showCredits); panel.append(eyebrow, title, summaryBlock, historianBlock, button); root.appendChild(panel); }
+function renderNote() { document.getElementById("note-overlay")?.remove(); if (!state.activeNote) return; const overlay = document.createElement("div"); overlay.className = "note-overlay"; overlay.id = "note-overlay"; const card = document.createElement("div"); card.className = "note-card"; const header = document.createElement("div"); header.className = "note-header"; const textWrap = document.createElement("div"); const eyebrow = document.createElement("p"); eyebrow.className = "eyebrow"; eyebrow.textContent = "Historian's Note"; const title = document.createElement("h3"); title.textContent = state.activeNote.title; textWrap.append(eyebrow, title); const close = document.createElement("button"); close.className = "ghost-button"; close.type = "button"; close.textContent = "Dismiss"; close.addEventListener("click", dismissNote); header.append(textWrap, close); const body = document.createElement("p"); body.className = "note-body"; appendNoteText(body, state.activeNote.text); const hint = document.createElement("p"); hint.className = "note-hint"; hint.textContent = "Press Space to dismiss"; card.append(header, body, hint); overlay.appendChild(card); document.body.appendChild(overlay); }
+function renderCredits() { document.getElementById("credits-overlay")?.remove(); if (!state.showCredits) return; const overlay = document.createElement("div"); overlay.className = "credits-overlay"; overlay.id = "credits-overlay"; const card = document.createElement("div"); card.className = "credits-card"; const header = document.createElement("div"); header.className = "note-header"; const textWrap = document.createElement("div"); const eyebrow = document.createElement("p"); eyebrow.className = "eyebrow"; eyebrow.textContent = "Credits"; const title = document.createElement("h3"); title.textContent = "Sources and Artwork"; textWrap.append(eyebrow, title); const close = document.createElement("button"); close.className = "ghost-button"; close.type = "button"; close.textContent = "Close and Restart"; close.addEventListener("click", restart); header.append(textWrap, close); const intro = document.createElement("p"); intro.textContent = "This screen will close and restart automatically after 30 seconds."; const grid = document.createElement("div"); grid.className = "credits-grid"; const sourceSection = document.createElement("section"); sourceSection.className = "credits-section"; const sourceTitle = document.createElement("h4"); sourceTitle.textContent = "Historian Sources"; sourceSection.appendChild(sourceTitle); historianSources.forEach((source) => { const p = document.createElement("p"); p.textContent = source; sourceSection.appendChild(p); }); const artSection = document.createElement("section"); artSection.className = "credits-section"; const artTitle = document.createElement("h4"); artTitle.textContent = "Artwork Sources"; artSection.appendChild(artTitle); artCredits.forEach(([file, source]) => { const p = document.createElement("p"); const strong = document.createElement("strong"); strong.textContent = file + ":"; p.append(strong, " ", source); artSection.appendChild(p); }); grid.append(sourceSection, artSection); card.append(header, intro, grid); overlay.appendChild(card); document.body.appendChild(overlay); }
+function renderMain() { if (state.screen === "title") renderTitle(); else if (state.screen === "about") renderAbout(); else if (state.outcome) renderOutcome(); else renderCard(); renderNote(); renderCredits(); const stats = document.getElementById("stats-panel"); const footer = document.querySelector(".footer-note"); const topbar = document.querySelector(".topbar"); const frame = document.querySelector(".game-frame"); const shell = document.querySelector(".app-shell"); const gameplayVisible = state.screen === "play"; const titleVisible = state.screen === "title"; stats.style.display = gameplayVisible ? "grid" : "none"; footer.style.display = gameplayVisible ? "flex" : "none"; topbar.style.display = gameplayVisible ? "flex" : "none"; frame.classList.toggle("title-mode", titleVisible); frame.classList.toggle("menu-mode", !gameplayVisible && !titleVisible); shell.classList.toggle("title-shell", titleVisible); }
+function render() { renderStats(); renderMain(); }
+function dismissNote() { state.activeNote = null; clearTimeout(state.noteTimer); render(); }
+function showCredits() { state.showCredits = true; clearTimeout(state.creditsTimer); state.creditsTimer = setTimeout(() => restart(), 30000); render(); }
+function choose(side) { const card = currentCard(); if (!card || state.screen !== "play" || state.outcome || state.activeNote || state.showCredits) return; const option = side === "left" ? card.leftChoice : card.rightChoice; const scaled = scaleEffects(option.effects); const nextStats = { death: clamp(state.stats.death + (scaled.death || 0)), wealth: clamp(state.stats.wealth + (scaled.wealth || 0)), order: clamp(state.stats.order + (scaled.order || 0)), faith: clamp(state.stats.faith + (scaled.faith || 0)) }; const nextHistory = [...state.history, { cardId: card.id, character: card.character, choice: side, note: card.historianNote }]; const nextDeck = filterDeck(nextHistory); const nextIndex = state.index + 1; state.stats = nextStats; state.history = nextHistory; state.deck = nextDeck; state.index = nextIndex; state.outcome = resolveOutcome(nextStats, nextIndex, nextDeck); state.statFeedback = Object.fromEntries(Object.entries(scaled).filter(([, v]) => v !== 0)); clearTimeout(state.feedbackTimer); state.feedbackTimer = setTimeout(() => { state.statFeedback = {}; renderStats(); }, 10000); if (card.historianNote) { state.activeNote = { title: card.character, text: card.historianNote }; clearTimeout(state.noteTimer); state.noteTimer = setTimeout(() => dismissNote(), 15000); } render(); }
+function restart() { state.deck = shuffleWithinPhases(cards); state.index = 0; state.stats = { ...initialStats }; state.history = []; state.outcome = null; state.statFeedback = {}; state.activeNote = null; state.showCredits = false; clearTimeout(state.feedbackTimer); clearTimeout(state.noteTimer); clearTimeout(state.creditsTimer); render(); }
+function beginGame() { restart(); state.screen = "play"; render(); }
+document.getElementById("restart-button").addEventListener("click", restart); window.addEventListener("keydown", (event) => { if (event.repeat) return; if (state.screen === "title" && event.key === "Enter") { event.preventDefault(); beginGame(); return; } if (state.activeNote && event.key === "Escape") { dismissNote(); return; } if (state.activeNote && event.key === " ") { event.preventDefault(); dismissNote(); return; } if (state.showCredits && event.key === "Escape") { restart(); return; } if (state.screen !== "play" || !currentCard() || state.outcome || state.activeNote || state.showCredits) return; const key = event.key.toLowerCase(); if (key === "a") choose("left"); if (key === "d") choose("right"); }); restart(); render();
+</script>
+</body>
+</html>
