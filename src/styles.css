@@ -359,6 +359,7 @@ button {
 .card-panel {
   grid-template-columns: 112px 1fr;
   align-items: start;
+  overflow: hidden;
 }
 
 .portrait-frame {
@@ -395,6 +396,10 @@ button {
 .summary-block p,
 .historian-block p {
   margin: 0;
+}
+
+.card-copy {
+  min-width: 0;
 }
 
 .choice-grid {
@@ -749,6 +754,7 @@ kbd {
 
   .card-panel {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
 
   .note-overlay {
@@ -790,13 +796,19 @@ kbd {
   .portrait-image {
     width: 100%;
     max-width: none;
-    height: 180px;
-    border-radius: 16px;
+    height: 188px;
+    border-radius: 14px;
   }
 
   .card-copy h2,
   .end-panel h2 {
     font-size: 1.45rem;
+  }
+
+  .card-copy {
+    display: grid;
+    gap: 10px;
+    padding: 6px 2px 0;
   }
 
   .card-copy p {
@@ -807,7 +819,7 @@ kbd {
   .season-marker {
     align-items: center;
     gap: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 0;
     padding-bottom: 12px;
   }
 
@@ -881,7 +893,7 @@ kbd {
   }
 
   .portrait-image {
-    height: 156px;
+    height: 164px;
   }
 
   .landing-copy {
