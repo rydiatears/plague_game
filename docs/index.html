@@ -995,15 +995,56 @@ kbd {
   <script>
 const PHASES = JSON.parse(document.getElementById("phases-data").textContent);
 const cards = JSON.parse(document.getElementById("cards-data").textContent);
-const noteOverrides = {
-  "aftermath-03":
-    "This is one of the most important long-term consequences of the Black Death. England's Statute of Laborers (1351) tried to freeze wages at pre-plague levels — the full text is available through the Fordham Internet Medieval Sourcebook. It was bitterly resented and contributed directly to the Peasants' Revolt of 1381 (see Froissart's chronicle account, also available through Fordham). Cohn's Lust for Liberty argues that the post-plague labor movements across Europe represented a fundamental shift in social power, not mere disorder (Cohn, Lust, chs. 8–9).",
-  "aftermath-04":
-    "The hasty ordination of poorly qualified priests was a widespread post-plague problem. Archbishop Islip of Canterbury issued a letter in 1350 lamenting that parishes were being filled with 'unlettered and insufficiently educated' clergy because so many trained priests had died (Horrox, pp. 272–73). The quality of clergy declined sharply, feeding anticlericalism and demands for Church reform. Historians trace a direct line from this crisis to the reformist movements of the fifteenth century — Wycliffe, Hus, and ultimately Luther.",
+const cardOverrides = {
+  "rumors-01": {
+    historianNote:
+      "The Black Death traveled along trade routes from the East. Gabriele de' Mussi's contemporary account describes Genoese ships carrying plague from Caffa to Italian ports (Horrox, pp. 14-26). Some Italian cities experimented with harsh exclusion and isolation measures, and Milan may have suffered lower mortality than some other major cities, but the evidence for exactly how much early gate-sealing in 1348 explains that difference is limited. Most towns depended on trade for food and survival, making closure a genuine risk.",
+  },
+  "rumors-03": {
+    historianNote:
+      "No one in 1348 understood bacteria or vectors; Alexandre Yersin identified the plague bacterium, Yersinia pestis, in 1894. Modern scholars generally agree that the Black Death involved Y. pestis, but the dominant route of transmission in fourteenth-century Europe is still debated: rats and rat fleas remain the classic explanation, while some recent studies argue that human fleas and lice may have played a major role. The rat catcher's instinct was plausible, but not something contemporaries could have explained scientifically.",
+  },
+  "approach-03": {
+    text: "The captain of the watch wants all new arrivals kept in tents outside the walls for a full month before entry. Merchants say this will strangle trade completely.",
+    rightChoice: { label: "Enforce the isolation." },
+    historianNote:
+      "Formal quarantine laws developed after the first Black Death wave, not before it. Ragusa (modern Dubrovnik) issued a landmark law on 27 July 1377 requiring arrivals from infected places to spend thirty days in isolation - a trentino - before entering the city; the familiar forty-day quarantina came later. Even so, ad hoc isolation of travelers and the sick was attempted earlier, and restricting movement was one of the few measures that could sometimes slow contagion.",
+  },
+  "approach-04": {
+    historianNote:
+      "Herbal remedies and vinegar washes were widely used. They could not cure plague, but contemporaries believed they helped purify corrupted air, and some practices - such as washing, cleaning, or avoiding foul-smelling places - may have had limited practical value. The Paris medical faculty recommended aromatic substances and vinegar as preventatives (Horrox, pp. 158-63). Folk healers, often women, were important medical providers for ordinary people who could not afford university-trained physicians. See also Byrne, pp. 37-52.",
+  },
+  "arrival-03": {
+    historianNote:
+      "Harsh household isolation measures did appear in plague-stricken cities, and later outbreaks would make them more systematic. Milan is often cited for sealing houses in 1348, but the evidence is patchy and historians are cautious about drawing a simple line from that policy to the city's apparently lower mortality. The ethical horror, however, is entirely real: containment could mean trapping healthy relatives with the sick. Similar measures became more common in later centuries.",
+  },
+  "peak-05": {
+    historianNote:
+      "Clergy died at higher rates than the general population because their duties required close contact with the sick and dying. Entire parishes lost their priests. In the diocese of Bath and Wells alone, 47.6% of beneficed clergy died (Ziegler, pp. 119-31). The diocese of Exeter lost approximately half its parish priests. The Church struggled to replace them, and the quality of replacement clergy became a lasting grievance that later fed anticlerical criticism and reformist sentiment. See also Horrox, pp. 268-73, on episcopal responses to the clergy shortage.",
+  },
+  "aftermath-03": {
+    historianNote:
+      "This is one of the most important long-term consequences of the Black Death. England's Statute of Laborers (1351) tried to freeze wages at pre-plague levels - the full text is available through the Fordham Internet Medieval Sourcebook. It was bitterly resented and contributed directly to the Peasants' Revolt of 1381 (see Froissart's chronicle account, also available through Fordham). Cohn's Lust for Liberty argues that the post-plague labor movements across Europe represented a fundamental shift in social power, not mere disorder (Cohn, Lust, chs. 8-9).",
+  },
+  "aftermath-04": {
+    historianNote:
+      "The hasty ordination of poorly qualified priests was a widespread post-plague problem. Archbishop Islip of Canterbury issued a letter in 1350 lamenting that parishes were being filled with 'unlettered and insufficiently educated' clergy because so many trained priests had died (Horrox, pp. 272-73). The quality of clergy declined sharply, feeding anticlericalism and later calls for reform. It is safer to say this crisis contributed to longer-term reformist currents than to draw a straight line from 1348 directly to Wycliffe, Hus, or Luther.",
+  },
+  "aftermath-07": {
+    historianNote:
+      "This final question captures a major debate about the Black Death's legacy. The pandemic was catastrophically destructive, but it also helped accelerate social and economic change in some regions: higher wages for many survivors, greater mobility, pressure on feudal labor arrangements, and more experimentation with labor-saving practices. Historians disagree on how directly these changes led to later developments such as the Renaissance or the 'rise of the West.' It is safest to present the plague as a force that intensified existing changes rather than single-handedly creating a new world.",
+  },
 };
 cards.forEach((card) => {
-  if (noteOverrides[card.id]) {
-    card.historianNote = noteOverrides[card.id];
+  const override = cardOverrides[card.id];
+  if (!override) return;
+  if (override.text) card.text = override.text;
+  if (override.historianNote) card.historianNote = override.historianNote;
+  if (override.leftChoice?.label) {
+    card.leftChoice = { ...card.leftChoice, label: override.leftChoice.label };
+  }
+  if (override.rightChoice?.label) {
+    card.rightChoice = { ...card.rightChoice, label: override.rightChoice.label };
   }
 });
 const cardArt = JSON.parse(document.getElementById("art-map-data").textContent);
