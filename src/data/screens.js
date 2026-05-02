@@ -20,7 +20,7 @@ export const aboutScreen = {
     {
       heading: "What This Game Teaches",
       paragraphs: [
-        "The game places students in the role of a medieval town council facing the Black Death. Over approximately 30 decision cards, students encounter the actual dilemmas that medieval communities faced: whether to close the gates to trade, how to respond to religious movements like the flagellants, whether to enforce quarantine at the cost of individual liberty, and how to maintain social order when institutions are collapsing.",
+        "The game places students in the role of a medieval town council facing the Black Death. Over 30 decision cards, students encounter the actual dilemmas that medieval communities faced: whether to close the gates to trade, how to respond to religious movements like the flagellants, whether to enforce quarantine at the cost of individual liberty, and how to maintain social order when institutions are collapsing.",
         "The game is designed to teach through trade-off reasoning rather than recall. There is no single correct path. Students learn that medieval people were making rational decisions with the knowledge and beliefs available to them, and that even good choices carried significant costs.",
         "Every card includes a Historian's Note that appears after play, providing scholarly context, primary source references, and connections to broader historical developments.",
       ],

@@ -159,6 +159,43 @@ function outcomeText(outcome) {
   return statMeta[outcome.stat].failText;
 }
 
+function victoryTitle(stats) {
+  if (
+    stats.death >= 70 ||
+    stats.wealth <= 25 ||
+    stats.order <= 25 ||
+    stats.faith <= 25
+  ) {
+    return "The Last Bell Still Rings";
+  }
+
+  if (stats.death >= 55) {
+    return "A Town in Mourning";
+  }
+
+  if (stats.wealth <= 40) {
+    return "The Empty Market";
+  }
+
+  if (stats.order <= 40) {
+    return "The Fractured Council";
+  }
+
+  if (stats.faith <= 40) {
+    return "The Weary Parish";
+  }
+
+  return "A Scarred Recovery";
+}
+
+function outcomeHeading(outcome, stats) {
+  if (outcome.type === "victory") {
+    return victoryTitle(stats);
+  }
+
+  return outcomeText(outcome);
+}
+
 function getFocusableElements(container) {
   return Array.from(
     container.querySelectorAll(
@@ -391,7 +428,7 @@ function App() {
       );
 
       if (!prerequisite) {
-        return false;
+        return true;
       }
 
       return (
@@ -615,8 +652,9 @@ function App() {
             <p className="eyebrow">
               {outcome?.type === "victory" ? "Year End" : "Council Fallen"}
             </p>
-            <h2>{outcomeText(outcome)}</h2>
+            <h2>{outcomeHeading(outcome, stats)}</h2>
             <div className="summary-block">
+              {outcome?.type === "victory" && <p>{outcomeText(outcome)}</p>}
               {summary.map((line) => (
                 <p key={line}>{line}</p>
               ))}

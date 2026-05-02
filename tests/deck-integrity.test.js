@@ -78,6 +78,52 @@ test("conditional cards reference reachable prerequisites", () => {
   }
 });
 
+test("conditional cards stay in the deck until prerequisites are resolved", () => {
+  const conditionalCards = cards.filter((card) => card.requires);
+  assert.ok(conditionalCards.length > 0, "test requires at least one conditional card");
+
+  const unresolvedHistory = [];
+  for (const card of conditionalCards) {
+    const prerequisite = cardsById.get(card.requires.cardId);
+    const prerequisiteIndex = cards.findIndex((candidate) => candidate.id === prerequisite.id);
+    const conditionalIndex = cards.findIndex((candidate) => candidate.id === card.id);
+
+    assert.ok(
+      prerequisiteIndex < conditionalIndex,
+      `${card.id} must appear after ${prerequisite.id} in canonical deck order`,
+    );
+    assert.ok(
+      shouldKeepConditionalCard(card, unresolvedHistory),
+      `${card.id} should remain possible until ${prerequisite.id} has been played`,
+    );
+  }
+
+  const flagellantFollowUp = cardsById.get("peak-08");
+  assert.equal(
+    shouldKeepConditionalCard(flagellantFollowUp, [{ cardId: "approach-02", choice: "left" }]),
+    false,
+    "peak-08 should be removed when the flagellants were driven out",
+  );
+  assert.equal(
+    shouldKeepConditionalCard(flagellantFollowUp, [{ cardId: "approach-02", choice: "right" }]),
+    true,
+    "peak-08 should stay when the flagellants were admitted",
+  );
+});
+
+function shouldKeepConditionalCard(card, history) {
+  if (!card.requires) {
+    return true;
+  }
+
+  const prerequisite = history.find((entry) => entry.cardId === card.requires.cardId);
+  if (!prerequisite) {
+    return true;
+  }
+
+  return card.requires.choice === "any" || prerequisite.choice === card.requires.choice;
+}
+
 test("art mappings cover every card and point to existing files", () => {
   for (const card of cards) {
     const artFile = cardArt[card.id];
