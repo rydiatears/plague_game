@@ -126,7 +126,7 @@ export const cards = [
     leftChoice: { label: "Too expensive and too slow.", effects: { death: 1 } },
     rightChoice: { label: "Build it. We'll need it.", effects: { wealth: -2, death: -1, order: 1 } },
     historianNote:
-      "Dedicated plague hospitals (lazarettos) became common after the Black Death, though few towns built them in advance of the first outbreak. Venice established the first permanent lazaretto on the island of Santa Maria di Nazareth in 1423; the Republic of Ragusa had set up temporary plague hospitals even earlier on the island of Mljet (Tomic, ch. 2). Towns that improvised isolation housing during the plague fared somewhat better, but the infrastructure barely existed in 1348.",
+      "Dedicated plague hospitals (lazarettos) became common after the Black Death, though few towns built them in advance of the first outbreak. Venice established the first permanent lazaretto on the island of Santa Maria di Nazareth in 1423; Ragusa/Dubrovnik developed its own quarantine and isolation system from the 1377 trentino onward, with later purpose-built lazaretto complexes. Towns that improvised isolation housing during the plague fared somewhat better, but the infrastructure barely existed in 1348.",
   },
   {
     id: "approach-06",
