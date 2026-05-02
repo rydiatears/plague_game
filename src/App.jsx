@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { PHASES, cards } from "./data/cards";
 import { artCredits, cardArt, historianSources, reactCardImages } from "./data/art";
 import { aboutScreen, titleScreen } from "./data/screens";
@@ -159,6 +159,14 @@ function outcomeText(outcome) {
   return statMeta[outcome.stat].failText;
 }
 
+function getFocusableElements(container) {
+  return Array.from(
+    container.querySelectorAll(
+      'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    ),
+  ).filter((element) => !element.hasAttribute("disabled") && !element.getAttribute("aria-hidden"));
+}
+
 function App() {
   const [deck, setDeck] = useState(() => shuffleWithinPhases(cards));
   const [index, setIndex] = useState(0);
@@ -169,6 +177,10 @@ function App() {
   const [activeNote, setActiveNote] = useState(null);
   const [showCredits, setShowCredits] = useState(false);
   const [screen, setScreen] = useState("title");
+  const noteDialogRef = useRef(null);
+  const creditsDialogRef = useRef(null);
+  const focusReturnRef = useRef(null);
+  const hadModalOpenRef = useRef(false);
 
   const currentCard = deck[index];
   const currentPhase = currentCard
@@ -217,6 +229,63 @@ function App() {
   }, [showCredits]);
 
   useEffect(() => {
+    const dialog = activeNote
+      ? noteDialogRef.current
+      : showCredits
+        ? creditsDialogRef.current
+        : null;
+
+    if (!dialog) {
+      if (hadModalOpenRef.current) {
+        hadModalOpenRef.current = false;
+        focusReturnRef.current?.focus?.();
+        focusReturnRef.current = null;
+      }
+
+      return undefined;
+    }
+
+    hadModalOpenRef.current = true;
+    const focusableElements = getFocusableElements(dialog);
+    const firstFocusable = focusableElements[0] ?? dialog;
+    const lastFocusable = focusableElements[focusableElements.length - 1] ?? dialog;
+
+    firstFocusable.focus();
+
+    function handleModalKeydown(event) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeActiveModal();
+        return;
+      }
+
+      if (event.key !== "Tab") {
+        return;
+      }
+
+      if (focusableElements.length === 0) {
+        event.preventDefault();
+        dialog.focus();
+        return;
+      }
+
+      if (event.shiftKey && document.activeElement === firstFocusable) {
+        event.preventDefault();
+        lastFocusable.focus();
+        return;
+      }
+
+      if (!event.shiftKey && document.activeElement === lastFocusable) {
+        event.preventDefault();
+        firstFocusable.focus();
+      }
+    }
+
+    dialog.addEventListener("keydown", handleModalKeydown);
+    return () => dialog.removeEventListener("keydown", handleModalKeydown);
+  }, [activeNote, showCredits]);
+
+  useEffect(() => {
     function handleKeydown(event) {
       if (event.repeat) return;
 
@@ -227,13 +296,13 @@ function App() {
       }
 
       if (activeNote && event.key === "Escape") {
-        setActiveNote(null);
+        closeActiveModal();
         return;
       }
 
       if (activeNote && event.key === " ") {
         event.preventDefault();
-        setActiveNote(null);
+        closeActiveModal();
         return;
       }
 
@@ -248,6 +317,30 @@ function App() {
     return () => window.removeEventListener("keydown", handleKeydown);
   }, [activeNote, currentCard, outcome, deck, history, index, screen, showCredits, stats]);
 
+  function rememberFocus() {
+    if (document.activeElement instanceof HTMLElement) {
+      focusReturnRef.current = document.activeElement;
+    }
+  }
+
+  function closeActiveModal() {
+    setActiveNote(null);
+    setShowCredits(false);
+  }
+
+  function openHistorianNote(card) {
+    rememberFocus();
+    setActiveNote({
+      title: card.character,
+      text: card.historianNote,
+    });
+  }
+
+  function openCredits() {
+    rememberFocus();
+    setShowCredits(true);
+  }
+
   function restart() {
     setDeck(shuffleWithinPhases(cards));
     setIndex(0);
@@ -257,6 +350,7 @@ function App() {
     setStatFeedback({});
     setActiveNote(null);
     setShowCredits(false);
+    focusReturnRef.current = null;
   }
 
   function beginGame() {
@@ -339,10 +433,7 @@ function App() {
       Object.fromEntries(Object.entries(scaledEffects).filter(([, value]) => value !== 0)),
     );
     if (currentCard.historianNote) {
-      setActiveNote({
-        title: currentCard.character,
-        text: currentCard.historianNote,
-      });
+      openHistorianNote(currentCard);
     }
   }
 
@@ -546,7 +637,7 @@ function App() {
             <button
               className="primary-button"
               type="button"
-              onClick={() => setShowCredits(true)}
+              onClick={openCredits}
             >
               Continue to Credits
             </button>
@@ -561,17 +652,24 @@ function App() {
         </aside>
 
         {activeNote ? (
-          <div className="note-overlay" role="dialog" aria-modal="false">
+          <div
+            aria-labelledby="historian-note-title"
+            aria-modal="true"
+            className="note-overlay"
+            ref={noteDialogRef}
+            role="dialog"
+            tabIndex={-1}
+          >
             <div className="note-card">
               <div className="note-header">
                 <div>
                   <p className="eyebrow">Historian's Note</p>
-                  <h3>{activeNote.title}</h3>
+                  <h3 id="historian-note-title">{activeNote.title}</h3>
                 </div>
                 <button
                   className="ghost-button"
                   type="button"
-                  onClick={() => setActiveNote(null)}
+                  onClick={closeActiveModal}
                 >
                   Dismiss
                 </button>
@@ -583,12 +681,19 @@ function App() {
         ) : null}
 
         {showCredits ? (
-          <div className="credits-overlay" role="dialog" aria-modal="false">
+          <div
+            aria-labelledby="credits-title"
+            aria-modal="true"
+            className="credits-overlay"
+            ref={creditsDialogRef}
+            role="dialog"
+            tabIndex={-1}
+          >
             <div className="credits-card">
               <div className="note-header">
                 <div>
                   <p className="eyebrow">Credits</p>
-                  <h3>Sources and Artwork</h3>
+                  <h3 id="credits-title">Sources and Artwork</h3>
                 </div>
                 <button className="ghost-button" type="button" onClick={restart}>
                   Close and Restart

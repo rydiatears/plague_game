@@ -100,14 +100,6 @@ button {
   font-size: 1.05rem;
 }
 
-.landing-stats {
-  margin: 22px 0;
-  padding: 18px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(235, 215, 186, 0.12);
-}
-
 .landing-button {
   margin-top: 10px;
 }
@@ -162,21 +154,6 @@ button {
   border-radius: 28px;
   background: rgba(20, 14, 13, 0.84);
   box-shadow: 0 24px 90px rgba(0, 0, 0, 0.35);
-}
-
-.game-frame.menu-mode {
-  max-width: 980px;
-  padding: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-.game-frame.menu-mode > .topbar,
-.game-frame.menu-mode > .stats-panel,
-.game-frame.menu-mode > .footer-note {
-  display: none !important;
 }
 
 .topbar,
@@ -593,10 +570,6 @@ kbd {
     border-radius: 22px;
   }
 
-  .game-frame.menu-mode {
-    padding: 0;
-  }
-
   .topbar,
   .choice-grid,
   .footer-note {
@@ -698,10 +671,6 @@ kbd {
   .game-frame {
     padding: 10px;
     border-radius: 16px;
-  }
-
-  .game-frame.menu-mode {
-    padding: 0;
   }
 
   .topbar {
