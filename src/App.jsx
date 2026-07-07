@@ -469,7 +469,7 @@ function App() {
     setStatFeedback(
       Object.fromEntries(Object.entries(scaledEffects).filter(([, value]) => value !== 0)),
     );
-    if (currentCard.historianNote) {
+    if (!nextOutcome && currentCard.historianNote) {
       openHistorianNote(currentCard);
     }
   }

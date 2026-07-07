@@ -367,7 +367,7 @@ export const cards = [
     character: "The Bishop",
     emoji: "⛪",
     text: "The bishop proposes a solemn memorial Mass for all who died, followed by a feast day to celebrate the town's survival. It would be expensive but meaningful.",
-    leftChoice: { label: "A Mass, yes. No feast - we can't afford it.", effects: { faith: 1, wealth: 0, order: 0 } },
+    leftChoice: { label: "A Mass, yes. No feast - we can't afford it.", effects: { faith: 1 } },
     rightChoice: { label: "Both. The people need to grieve and to hope.", effects: { faith: 2, wealth: -1, order: 1 } },
     historianNote:
       "Post-plague religious observances were deeply important to survivors. The massive investment in chantries (endowed Masses for the dead), memorial foundations, and votive art after 1348 reshaped Church finances and piety for generations. Ziegler discusses the surge in charitable and religious bequests (Ziegler, pp. 253-74). The psychological and spiritual processing of collective trauma through ritual is one of the most underappreciated aspects of medieval plague response.",
