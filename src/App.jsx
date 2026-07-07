@@ -6,14 +6,14 @@ import { aboutScreen, titleScreen } from "./data/screens";
 const SCALE = 5;
 
 const initialStats = {
-  death: 15,
-  wealth: 55,
+  death: 20,
+  wealth: 68,
   order: 55,
   faith: 55,
 };
 
 const failThresholds = {
-  death: 85,
+  death: 80,
   wealth: 10,
   order: 10,
   faith: 10,

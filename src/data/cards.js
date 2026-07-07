@@ -14,7 +14,7 @@ export const cards = [
     emoji: "🏪",
     text: "Traders from Genoa have arrived with wool and news. They say a terrible pestilence follows behind them, sweeping through port cities. Do we let them trade?",
     leftChoice: { label: "Bar the gates to outside trade.", effects: { order: 1, wealth: -2 } },
-    rightChoice: { label: "Trade must continue.", effects: { wealth: 1, death: 1 } },
+    rightChoice: { label: "Trade must continue.", effects: { wealth: 2, death: 1 } },
     historianNote:
       "The Black Death traveled along trade routes from the East. Gabriele de' Mussi's contemporary account describes Genoese ships carrying plague from Caffa to Italian ports (Horrox, pp. 14-26). Some Italian cities experimented with harsh exclusion and isolation measures, and Milan may have suffered lower mortality than some other major cities, but the evidence for exactly how much early gate-sealing in 1348 explains that difference is limited. Most towns depended on trade for food and survival, making closure a genuine risk.",
   },
@@ -68,7 +68,7 @@ export const cards = [
     character: "The Innkeeper",
     emoji: "🍺",
     text: "Travelers keep bringing darker news each week. The innkeeper says fear is already hurting business. He wants the council to publicly declare the town safe and healthy.",
-    leftChoice: { label: "Issue the declaration. Calm people down.", effects: { wealth: 1, order: 1, death: 1 } },
+    leftChoice: { label: "Issue the declaration. Calm people down.", effects: { wealth: 2, order: 1, death: 1 } },
     rightChoice: { label: "We won't lie. Say nothing official.", effects: { wealth: -1, faith: 1 } },
     historianNote:
       "Many towns downplayed or denied the plague's approach to protect trade. Boccaccio describes how Florence's government initially failed to act effectively despite early warnings (Boccaccio, Introduction to Day 1). The short-term economic benefit of denial was real, but it left populations unprepared when the plague arrived. Giovanni Villani's chronicle records Florence's initial attempts to suppress alarming news (Aberth, pp. 19-20).",
@@ -80,7 +80,7 @@ export const cards = [
     emoji: "👨‍👩‍👧‍👦",
     text: "Families from a stricken village are at your gates, begging for shelter. Among them are children. Your watchmen say some look feverish.",
     leftChoice: { label: "We cannot risk it. Turn them away.", effects: { death: -1, faith: -1 } },
-    rightChoice: { label: "Christian charity demands we help.", effects: { faith: 1, death: 2, wealth: -1 } },
+    rightChoice: { label: "Christian charity demands we help.", effects: { faith: 1, death: 3, wealth: -1 } },
     historianNote:
       "This was one of the cruelest dilemmas of the plague years. Chronicles record gates shut against desperate refugees, but also towns that took in the sick out of compassion - often at terrible cost. Agnolo di Tura of Siena describes burying his own five children with his own hands, and the general abandonment of the sick by their families (Horrox, pp. 28-29). Neither choice was obviously right in the moment.",
   },
@@ -101,7 +101,7 @@ export const cards = [
     character: "The Watchman",
     emoji: "🔔",
     text: "The captain of the watch wants all new arrivals kept in tents outside the walls for a full month before entry. Merchants say this will strangle trade completely.",
-    leftChoice: { label: "Forty days is too long. Allow entry with inspection.", effects: { wealth: 1, death: 1 } },
+    leftChoice: { label: "Forty days is too long. Allow entry with inspection.", effects: { wealth: 2, death: 2 } },
     rightChoice: { label: "Enforce the isolation.", effects: { wealth: -2, death: -2, order: 1 } },
     historianNote:
       "Formal quarantine laws developed after the first Black Death wave, not before it. Ragusa (modern Dubrovnik) issued a landmark law on 27 July 1377 requiring arrivals from infected places to spend thirty days in isolation - a trentino - before entering the city; the familiar forty-day quarantina came later. Even so, ad hoc isolation of travelers and the sick was attempted earlier, and restricting movement was one of the few measures that could sometimes slow contagion.",
@@ -134,8 +134,8 @@ export const cards = [
     character: "The Bishop",
     emoji: "⛪",
     text: "The bishop wants to lead a solemn procession through the streets carrying the relics of your town's patron saint. He believes it will strengthen the people's faith and God's protection.",
-    leftChoice: { label: "Forbid public gatherings.", effects: { faith: -1, death: -1 } },
-    rightChoice: { label: "Let them process.", effects: { faith: 2, death: 2 } },
+    leftChoice: { label: "Forbid public gatherings.", effects: { faith: -1, death: -2 } },
+    rightChoice: { label: "Let them process.", effects: { faith: 2, death: 3 } },
     historianNote:
       "Religious processions were a standard response to crisis, and deeply meaningful to medieval Christians. But they were also mass gatherings in narrow streets - ideal conditions for plague transmission. Clement VI eventually discouraged large gatherings, but many processions had already taken place. Louis Heyligen, writing from Avignon, describes processions ordered by the Pope himself before the dangers of gatherings were understood (Horrox, pp. 41-45).",
   },
@@ -145,7 +145,7 @@ export const cards = [
     character: "The Steward",
     emoji: "🗝️",
     text: "The lord's steward arrives from the manor. His lordship has already fled to the countryside and orders you to send supplies after him. The town's stores are limited.",
-    leftChoice: { label: "Send what he demands. He is our lord.", effects: { wealth: -2, order: 1 } },
+    leftChoice: { label: "Send what he demands. He is our lord.", effects: { wealth: -2, order: 1, faith: -1 } },
     rightChoice: { label: "Refuse. The town's need is greater.", effects: { wealth: 1, order: -1 } },
     historianNote:
       "The flight of the nobility was one of the most socially corrosive effects of the plague. Boccaccio describes the wealthy abandoning Florence at length in his Introduction to Day 1 (Boccaccio, pp. 5-14). Marchione di Coppo Stefani's chronicle confirms that those who could afford to leave Florence did so, stripping the city of leadership at the worst possible moment. Those left behind noticed - and remembered. The resentment fueled later demands for social change.",
@@ -156,7 +156,7 @@ export const cards = [
     character: "The Physician",
     emoji: "⚕️",
     text: "A doctor from Montpellier offers his services. He is learned and confident, but expensive. He prescribes bloodletting, theriac, and aromatic fires. His cures are unproven.",
-    leftChoice: { label: "We cannot afford him.", effects: {} },
+    leftChoice: { label: "We cannot afford him.", effects: { faith: -1, death: 1 } },
     rightChoice: { label: "Hire him. The people need hope.", effects: { wealth: -2, death: -1, faith: 1 } },
     historianNote:
       "University-trained physicians had little effective treatment for plague. Bloodletting and theriac (an ancient compound) were standard but useless against Yersinia pestis. The Paris medical faculty's report recommended aromatic fires, dietary regulation, and avoiding bathing, among other measures (Horrox, pp. 158-63). Guy de Chauliac, physician to Clement VI at Avignon, provides one of the most honest medical accounts, admitting that doctors' treatments were largely ineffective and that he himself contracted the plague (Horrox, pp. 176-77).",
@@ -178,8 +178,8 @@ export const cards = [
     character: "The Magistrate",
     emoji: "⚖️",
     text: "The first plague cases are confirmed in the cloth-workers' quarter. The magistrate proposes sealing the entire street - no one in or out - until the sickness passes or they die.",
-    leftChoice: { label: "Seal the street. Contain it.", effects: { death: -2, order: -1, faith: -1 } },
-    rightChoice: { label: "That's a death sentence. Let the healthy leave.", effects: { faith: 1, death: 2, order: 1 } },
+    leftChoice: { label: "Seal the street. Contain it.", effects: { death: -3, order: -1, faith: -1 } },
+    rightChoice: { label: "That's a death sentence. Let the healthy leave.", effects: { faith: 1, death: 3, order: 1 } },
     historianNote:
       "Harsh household isolation measures did appear in plague-stricken cities, and later outbreaks would make them more systematic. Milan is often cited for sealing houses in 1348, but the evidence is patchy and historians are cautious about drawing a simple line from that policy to the city's apparently lower mortality. The ethical horror, however, is entirely real: containment could mean trapping healthy relatives with the sick. Similar measures became more common in later centuries.",
   },
@@ -223,7 +223,7 @@ export const cards = [
     emoji: "🍷",
     text: "The tavern is packed every night now. People are drinking heavily, spending wildly. 'Eat, drink, for tomorrow we die.' The revelry is growing louder - and fights more frequent.",
     leftChoice: { label: "Close the tavern. Order curfew.", effects: { order: 2, faith: 1, wealth: -1 } },
-    rightChoice: { label: "Let them have their comfort.", effects: { order: -1, death: 1, wealth: 1 } },
+    rightChoice: { label: "Let them have their comfort.", effects: { order: -1, death: 2, wealth: 2 } },
     historianNote:
       "Boccaccio describes two opposite responses to the plague in his Introduction to Day 1: strict sobriety and moderation on one hand, and frantic indulgence on the other - those who 'maintained that there was no better medicine against the plague than to drink heavily, enjoy life to the full ... and shrug the whole thing off as a joke' (Boccaccio, Introduction). Both were attempts to cope. Thucydides described nearly identical behavior during the Plague of Athens - a parallel that Boccaccio, who knew his classics, may have intentionally echoed.",
   },
@@ -234,7 +234,7 @@ export const cards = [
     emoji: "✡️",
     text: "Angry voices blame the Jews for poisoning wells. A mob gathers outside the Jewish quarter. They demand the council hand over the Jews for 'justice.'",
     leftChoice: { label: "Protect them. The Pope himself has condemned this slander.", effects: { order: -1, faith: 2 } },
-    rightChoice: { label: "Give the mob what they want.", effects: { order: -2, faith: -2, death: 1 } },
+    rightChoice: { label: "Give the mob what they want.", effects: { order: -2, faith: -2, death: 2 } },
     historianNote:
       "Pogroms accompanied the Black Death across Europe, especially in German-speaking lands. Pope Clement VI issued two papal bulls in 1348 condemning the violence: Sicut Judeis (4 July 1348), reaffirming traditional papal protection of Jews, and Quamvis Perfidiam (26 September 1348), which directly addressed the plague accusations, declaring that Jews could not be responsible because 'through many parts of the world the same plague ... has afflicted and afflicts the Jews themselves and many other races who have never lived alongside them' (Horrox, pp. 219-22). Despite Clement's intervention, the pogroms continued - Samuel Cohn argues they were driven less by popular rage than by elites seeking to seize Jewish property and cancel debts (Cohn, 'Burning,' pp. 3-36). Towns under Clement's direct authority that protected their Jewish communities showed both moral and practical wisdom - mob violence destabilized communities without slowing the plague.",
   },
@@ -244,8 +244,8 @@ export const cards = [
     character: "The Gravedigger",
     emoji: "💀",
     text: "The dead are piling faster than anyone can bury them. The gravedigger wants permission to dig a mass pit outside the walls. There is no time for individual Christian burial.",
-    leftChoice: { label: "Maintain proper burial. Every soul deserves it.", effects: { faith: 1, death: 2, order: -1 } },
-    rightChoice: { label: "Dig the pit.", effects: { faith: -1, death: -1, order: 1 } },
+    leftChoice: { label: "Maintain proper burial. Every soul deserves it.", effects: { faith: 1, death: 3, order: -1 } },
+    rightChoice: { label: "Dig the pit.", effects: { faith: -1, death: -2, order: 1 } },
     historianNote:
       "Mass burial pits have been confirmed by archaeology across Europe - the East Smithfield cemetery in London and sites in Provence and Tuscany among them. Boccaccio's description of Florentine burials is the most famous literary account: bodies stacked in trenches 'just the way one makes lasagne with layers of pasta and cheese' (Boccaccio, Introduction). Agnolo di Tura of Siena wrote that 'in many places in Siena great pits were dug and piled deep with the multitude of dead' (Horrox, pp. 28-29). The abandonment of individual burial rites struck at the heart of medieval Christian practice around death and salvation.",
   },
@@ -266,7 +266,7 @@ export const cards = [
     character: "The Laborer",
     emoji: "🔨",
     text: "So many workers have died that the survivors are demanding double wages. Without them, crops rot and workshops stand empty. The old wage laws say you must refuse.",
-    leftChoice: { label: "Hold the line. Enforce the old wages.", effects: { order: 1, wealth: -1, faith: -1 } },
+    leftChoice: { label: "Hold the line. Enforce the old wages.", effects: { order: 1, wealth: -1, faith: -2 } },
     rightChoice: { label: "Pay what they ask. We need them.", effects: { wealth: -2, order: -1, faith: 1 } },
     historianNote:
       "The post-plague labor shortage transformed European economics. England's Parliament passed the Statute of Laborers in 1351, attempting to freeze wages at pre-plague levels - the full text is available through the Fordham Internet Medieval Sourcebook. The Statute was widely resented and ultimately unenforceable, contributing directly to the Peasants' Revolt of 1381 (Cohn, Lust, ch. 9). Similar wage-control legislation appeared across Europe. Workers who survived could demand higher wages, better conditions, and freedom of movement.",
@@ -322,8 +322,8 @@ export const cards = [
     character: "The Watchman",
     emoji: "🔔",
     text: "No new cases in two weeks. The watchman asks: do we reopen the gates? Traders are waiting. But the plague could return.",
-    leftChoice: { label: "Keep the gates closed another month.", effects: { death: -1, wealth: -2 } },
-    rightChoice: { label: "Reopen. The town needs trade to survive.", effects: { wealth: 2, death: 1 } },
+    leftChoice: { label: "Keep the gates closed another month.", effects: { death: -2, wealth: -1 } },
+    rightChoice: { label: "Reopen. The town needs trade to survive.", effects: { wealth: 3, death: 2 } },
     historianNote:
       "The plague receded in waves and often returned - major recurrences struck Europe in 1361 (the 'pestis secunda'), 1369, and periodically thereafter for centuries. Towns that reopened too quickly sometimes suffered secondary outbreaks. The Republic of Ragusa's quarantine legislation of 1377 was specifically designed to address this problem of recurrence (Tomic, ch. 1). But prolonged isolation meant economic collapse, and most towns reopened cautiously, driven by hunger and the need to rebuild.",
   },
@@ -334,7 +334,7 @@ export const cards = [
     emoji: "🏪",
     text: "With so many dead, abandoned property and goods are everywhere. The merchant proposes the council claim all unclaimed property and sell it to refill the treasury.",
     leftChoice: { label: "Wait for heirs to come forward. Respect the dead.", effects: { faith: 1, wealth: -1, order: 1 } },
-    rightChoice: { label: "Seize and sell. The living need it more.", effects: { wealth: 2, faith: -1, order: -1 } },
+    rightChoice: { label: "Seize and sell. The living need it more.", effects: { wealth: 3, faith: -1, order: -1 } },
     historianNote:
       "Inheritance chaos after the plague was enormous. With entire families dead, property claims became a legal and moral tangle. Towns, churches, and lords all competed for unclaimed estates. The massive bequests to the Church by dying plague victims - and subsequent disputes over them - reshaped ecclesiastical wealth. Horrox discusses post-plague property disputes and their long-term economic effects (Horrox, pp. 227-316). Tuchman observes that the redistribution of property was one of the most significant long-term economic effects of the Black Death (Tuchman, pp. 119-20).",
   },
@@ -378,7 +378,7 @@ export const cards = [
     character: "The Newcomers",
     emoji: "🏠",
     text: "Families from other stricken areas want to settle in your half-empty town. They bring skills and labor you desperately need - but they are strangers.",
-    leftChoice: { label: "Welcome them. Fill the empty houses.", effects: { wealth: 2, order: -1, death: 1 } },
+    leftChoice: { label: "Welcome them. Fill the empty houses.", effects: { wealth: 3, order: -1, death: 2 } },
     rightChoice: { label: "Our own people first. Limit new arrivals.", effects: { order: 1, wealth: -1 } },
     historianNote:
       "Population movement after the plague reshaped European demographics. Many towns actively recruited settlers to replace the dead. Serfs found they could flee to depopulated areas and negotiate better terms - a key factor in the gradual decline of serfdom in Western Europe. Horrox discusses post-plague labor mobility and its consequences (Horrox, pp. 287-316). The population of Europe would not recover to pre-plague levels until the sixteenth century (Ziegler, pp. 224-31).",
